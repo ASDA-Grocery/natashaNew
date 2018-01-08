@@ -77,10 +77,10 @@ app.post('/callWebhook', function(req, res) {
       }
       else{
         if(typeOfProducts === 'fragile'){
-            speech = 'The cost is 100 pounds. Do you want me to go ahead and book a slot?';
+            speech = 'The cost is 100 pounds. Do you want to see the slots available to book?';
         }
         else if(typeOfProducts === 'normal'){
-            speech = 'The cost is 60 pounds. Do you want me to go ahead and book a slot?';
+            speech = 'The cost is 60 pounds. Do you want to see the slots available to book?';
         }
         else{
             speech = 'Sorry! this type of product delivery is not available!'
