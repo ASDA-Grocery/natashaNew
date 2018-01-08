@@ -31,8 +31,42 @@ app.post('/callWebhook', function(req, res) {
     
     if(intent === 'enquireCharge'){
       console.log('Inside EnquireCharge Intent')
-      speech = 'Inside EnquireCharge Intent';
-      responseToAPI(speech);
+      var originCity = req.body.result.parameters.originCity ? req.body.result.parameters.originCity : 'noOriginCity'
+        , destinationCity = req.body.result.parameters.destinationCity ? req.body.result.parameters.destinationCity : 'noDestinationCity'
+        , numberOfDays = req.body.result.parameters.numberOfDays ? req.body.result.parameters.numberOfDays : 'noNumberOfDays'
+        , timePeriod = req.body.result.parameters.timePeriod ? req.body.result.parameters.timePeriod : 'noTimePeriod'
+        , parcelLength = req.body.result.parameters.parcelLength ? req.body.result.parameters.parcelLength : 'noParcelLength'
+        , parcelWeight = req.body.result.parameters.parcelWeight ? req.body.result.parameters.parcelWeight : 'noParcelWeight';
+      
+      if(destinationCity === 'noDestinationCity'){
+        speech = 'Please provide destination city';
+        responseToAPI(speech);
+      }
+      else if(originCity === 'noOriginCity'){
+        speech = 'Please provide Origin city';
+        responseToAPI(speech);
+      }
+      else if(numberOfDays === 'noNumberOfDays'){
+        speech = 'Please provide time period';
+        responseToAPI(speech);
+      }
+      else if(timePeriod === 'notimePeriod'){
+        speech = 'Please provide days or weeks';
+        responseToAPI(speech);
+      }
+      else if(parcelLength === 'noParcelLength'){
+        speech = 'Please provide size of parcel';
+        responseToAPI(speech);
+      }
+      else if(parcelWeight === 'noParcelWeight'){
+        speech = 'Please provide weight of parcel';
+        responseToAPI(speech);
+      }
+      else{
+        speech = 'The cost is 60 pounds';
+        responseToAPI(speech);
+      }
+      
     }    
     else{
       console.log('No intent matched!!')
