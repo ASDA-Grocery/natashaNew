@@ -1,7 +1,7 @@
 {
-  "name": "webhook-test-sample",
+  "name": "webhook-test-natasha",
   "version": "1.0.0",
-  "description": "Webhook test sample",
+  "description": "Webhook test natasha",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
