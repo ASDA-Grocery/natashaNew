@@ -35,9 +35,9 @@ app.post('/callWebhook', function(req, res) {
 //       , accessToken = req.body.originalRequest.data.user.accessToken ? req.body.originalRequest.data.user.accessToken : 'noAccessToken';
     console.log('intent - > ', intent);
     
-    if(intent === 'orderDate-status'){
-      console.log('Checking by Date :', req.body.result.parameters)
-
+    if(intent === 'enquireCharge'){
+      console.log('Inside EnquireCharge Intent')
+      speech = 'Inside EnquireCharge Intent';
       responseToAPI(speech);
     }    
     else{
