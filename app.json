@@ -1,6 +1,6 @@
 {
-  "name": "webhook-melissa-assistant",
-  "description": "webhook-melissa-assistant",
+  "name": "webhook-fedex-assistant",
+  "description": "webhook-fedex-assistant",
   "repository": "https://github.com/ASDA-Grocery/asdaGrocery.git",
   "keywords": ["api.ai", "natural language"]
 }
