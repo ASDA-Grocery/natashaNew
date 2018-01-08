@@ -77,10 +77,10 @@ app.post('/callWebhook', function(req, res) {
       }
       else{
         if(typeOfProducts === 'fragile'){
-            speech = 'The cost is 100 pounds.';
+            speech = 'An additional surcharge of 40 pounds will be added to base delivery charge.';
         }
         else if(typeOfProducts === 'normal'){
-            speech = 'The cost is 60 pounds.';
+            speech = 'No additional surcharge is required.';
         }
         else{
             speech = 'Sorry! this type of product delivery is not available!'
