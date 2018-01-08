@@ -31,8 +31,8 @@ app.post('/callWebhook', function(req, res) {
     var speech = 'This is the default speech'
       , contextOut
       , intent = req.body.result && req.body.result.metadata.intentName ? req.body.result.metadata.intentName : "noIntent"
-      , contexts =  req.body.result && req.body.result.contexts ? req.body.result.contexts : "noContexts"
-      , accessToken = req.body.originalRequest.data.user.accessToken ? req.body.originalRequest.data.user.accessToken : 'noAccessToken';
+      , contexts =  req.body.result && req.body.result.contexts ? req.body.result.contexts : "noContexts";
+//       , accessToken = req.body.originalRequest.data.user.accessToken ? req.body.originalRequest.data.user.accessToken : 'noAccessToken';
     console.log('intent - > ', intent);
     
     if(intent === 'orderDate-status'){
