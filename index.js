@@ -68,7 +68,7 @@ app.post('/callWebhook', function(req, res) {
       }      
     } 
     
-     if(intent === 'enquireSurcharge'){
+    if(intent === 'enquireSurcharge'){
       console.log('Inside enquireSurcharge Intent')
       var typeOfProducts = req.body.result.parameters.typeOfProducts ? req.body.result.parameters.originCity : 'noTypeOfProducts'
       if(typeOfProducts === 'noTypeOfProducts'){
@@ -88,6 +88,27 @@ app.post('/callWebhook', function(req, res) {
         responseToAPI(speech);
       }      
     }
+    
+//     if(intent === 'bookPickupSlot'){
+//       console.log('Inside bookPickupSlot Intent')
+//       var typeOfProducts = req.body.result.parameters.typeOfProducts ? req.body.result.parameters.originCity : 'noTypeOfProducts'
+//       if(typeOfProducts === 'noTypeOfProducts'){
+//         speech = 'Please specify type of product';
+//         responseToAPI(speech);
+//       }
+//       else{
+//         if(typeOfProducts === 'fragile'){
+//             speech = 'An additional surcharge of 40 pounds will be added to base delivery charge.';
+//         }
+//         else if(typeOfProducts === 'normal'){
+//             speech = 'No additional surcharge is required.';
+//         }
+//         else{
+//             speech = 'Sorry! this type of product delivery is not available!'
+//         }
+//         responseToAPI(speech);
+//       }      
+//     }
     
     else{
       console.log('No intent matched!!')
