@@ -70,7 +70,7 @@ app.post('/callWebhook', function(req, res) {
     
     if(intent === 'enquireSurcharge'){
       console.log('Inside enquireSurcharge Intent')
-      var typeOfProducts = req.body.result.parameters.typeOfProducts ? req.body.result.parameters.originCity : 'noTypeOfProducts'
+      var typeOfProducts = req.body.result.parameters.typeOfProducts ? req.body.result.parameters.typeOfProducts : 'noTypeOfProducts'
       if(typeOfProducts === 'noTypeOfProducts'){
         speech = 'Please specify type of product';
         responseToAPI(speech);
