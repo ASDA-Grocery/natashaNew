@@ -65,9 +65,30 @@ app.post('/callWebhook', function(req, res) {
       else{
         speech = 'The cost is 60 pounds';
         responseToAPI(speech);
+      }      
+    } 
+    
+     if(intent === 'enquireSurcharge'){
+      console.log('Inside enquireSurcharge Intent')
+      var typeOfProducts = req.body.result.parameters.typeOfProducts ? req.body.result.parameters.originCity : 'noTypeOfProducts'
+      if(typeOfProducts === 'noTypeOfProducts'){
+        speech = 'Please specify type of product';
+        responseToAPI(speech);
       }
-      
-    }    
+      else{
+        if(typeOfProducts === 'fragile'){
+            speech = 'The cost is 100 pounds';
+        }
+        else if(typeOfProducts === 'normal'){
+            speech = 'The cost is 60 pounds';
+        }
+        else{
+            speech = 'Sorry! this type of product delivery is not available!'
+        }
+        responseToAPI(speech);
+      }      
+    }
+    
     else{
       console.log('No intent matched!!')
       speech = 'Sorry! Unable to Understand'
