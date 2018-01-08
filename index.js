@@ -5,12 +5,6 @@ const express = require('express')
     , { wordsToNumbers } = require('words-to-numbers')
     , app = express();
 
-// var orderData = require('./orderDb.js')
-//   , shoppingData = require('./shoppingList.js')
-//   , productData = require('./productList.js')
-//   , customerData = require('./customerList.js')
-//   , openNotificationsData = require('./openNotifications.js');
-
 // const google = require('googleapis')
 //     , calendar = google.calendar('v3')
 //     , OAuth2 = google.auth.OAuth2
