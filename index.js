@@ -103,6 +103,7 @@ app.post('/callWebhook', function(req, res) {
               else{
                 speech = 'The cost of delivery will be ' + priceForDaysAndDistance + ' Pounds.'
               }
+              responseToAPI(speech);
               return distance;
             }
           );
@@ -157,7 +158,6 @@ app.post('/callWebhook', function(req, res) {
             i++;
           }
         }
-        responseToAPI(speech);
       }      
     } 
     
