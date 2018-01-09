@@ -246,7 +246,7 @@ app.post('/callWebhook', function(req, res) {
         packageData.packageDb.forEach(function(element){
           if(element.status === 'open'){
             speech = speech + ' Package ' + tempCount + ' is for ' + element.value
-                     + ' and it was placed on ' + element.packageSentDate + ' to '+element.destination+'.'
+                     + ' and it was sent on ' + element.packageSentDate + ' to '+element.destination+'.'
             tempCount++;
           }
         })
