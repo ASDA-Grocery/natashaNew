@@ -286,7 +286,7 @@ app.post('/callWebhook', function(req, res) {
       else{
          for(var i = 0; i < packageData.packageDb.length; i++){
           if(packageData.packageDb[i].status === 'transit'){
-            if(packageData.packageDb[i].destination == packageDest){
+            if(packageData.packageDb[i].destination.toUpperCase() == packageDest.toUpperCase()){
               var deliveryTimeRem = (packageData.packageDb[i].deliveryTime - new Date())/60000;
                  speech = 'Your package is in transit to '+packageData.packageDb[i].destination+' and will reach your nearest distribution center in the next '
                          + Math.ceil(deliveryTimeRem) + ' minutes. Would you like me to help you with anything else?'
