@@ -213,6 +213,28 @@ app.post('/callWebhook', function(req, res) {
       }      
     }
     
+    else if(intent === 'bookPickupSlot'){
+      console.log('Inside bookPickupSlot Intent')
+      var dateOfPickup = req.body.result.parameters.dateOfPickup ? req.body.result.parameters.timeOfDay : 'noDateOfPickup'
+      if(dateOfPickup === 'noDateOfPickup'){
+        speech = 'Please specify the date of pickup as today or tomorrow.';
+        responseToAPI(speech);
+      }
+      else{
+        if(dateOfPickup === 'today'){
+            speech = 'We have three pickup slots. The first one is from 9 AM to 10 AM, the second one is from 12 PM to 1 PM and the last one is from 3 PM to 4 PM. Which one do you want to select?.'
+        }
+        else if(dateOfPickup === 'tomorrow'){
+            speech = 'We have three pickup slots. The first one is from 9 AM to 10 AM, the second one is from 12 PM to 1 PM and the last one is from 3 PM to 4 PM. Also I see that there is delivery scheduled for tomorrow 3 PM. Do you want to schedule the pickup at that time or you want to select a new available slot?.'
+        }
+        else{
+            speech = 'Sorry! This slot is not available.'
+        }
+        responseToAPI(speech);
+      }      
+    }
+    
+    
     else if(intent === 'selectPickupSlot'){
       console.log('Inside selectPickupSlot Intent')
       var timeOfDay = req.body.result.parameters.timeOfDay ? req.body.result.parameters.timeOfDay : 'noTimeOfDay'
