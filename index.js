@@ -157,7 +157,7 @@ app.post('/callWebhook', function(req, res) {
       }      
     } 
     
-    if(intent === 'enquireSurcharge'){
+    else if(intent === 'enquireSurcharge'){
       console.log('Inside enquireSurcharge Intent')
       var typeOfProducts = req.body.result.parameters.typeOfProducts ? req.body.result.parameters.typeOfProducts : 'noTypeOfProducts'
       if(typeOfProducts === 'noTypeOfProducts'){
@@ -178,7 +178,7 @@ app.post('/callWebhook', function(req, res) {
       }      
     }
     
-    if(intent === 'selectPickupSlot'){
+    else if(intent === 'selectPickupSlot'){
       console.log('Inside selectPickupSlot Intent')
       var timeOfDay = req.body.result.parameters.timeOfDay ? req.body.result.parameters.timeOfDay : 'noTimeOfDay'
         , slotStartTime = req.body.result.parameters.slotStartTime ? req.body.result.parameters.slotStartTime : 'noSlotStartTime'
