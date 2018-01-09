@@ -266,8 +266,6 @@ app.post('/callWebhook', function(req, res) {
             packageCounter++;
             if(packageCounter == packageNo){
               var deliveryTimeRem = (packageData.packageDb[i].deliveryTime - new Date())/60000;
-    //                   speech = 'It has left our store and will reach you in the next '
-    //                             + Math.ceil(deliveryTimeRem) + ' minutes . Would you like me to help you with anything else?'
                  speech = 'Your package is in transit to '+packageData.packageDb[i].destination+' and will reach your nearest distribution center in the next '
                          + Math.ceil(deliveryTimeRem) + ' minutes. Would you like me to help you with anything else?'
               if(packageData.packageDb[i].shipped === 'outForDelivery'){
@@ -279,6 +277,27 @@ app.post('/callWebhook', function(req, res) {
         }
       }
       responseToAPI(speech);
+    }
+    else if(intent === 'packageDest-status'){
+      var packageDest = req.body.result.parameters.packageDest ? req.body.result.parameters.packageDest : 'noDestination'
+      if(packageDest === 'noDestination'){
+        speech = 'Sorry! Not able to help you this time. Do you want me to help you with anything else?'
+      }
+      else{
+         for(var i = 0; i < packageData.packageDb.length; i++){
+          if(packageData.packageDb[i].status === 'transit'){
+            if(packageData.packageDb[i].destination == packageDest){
+              var deliveryTimeRem = (packageData.packageDb[i].deliveryTime - new Date())/60000;
+                 speech = 'Your package is in transit to '+packageData.packageDb[i].destination+' and will reach your nearest distribution center in the next '
+                         + Math.ceil(deliveryTimeRem) + ' minutes. Would you like me to help you with anything else?'
+              if(packageData.packageDb[i].shipped === 'outForDelivery'){
+                speech = 'It is yet to be shipped but will reach you on time. Anything else I can help you with?'
+              }
+              break;
+            }
+          }
+        }
+      }
     }
     
     else{
