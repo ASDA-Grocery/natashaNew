@@ -5,8 +5,11 @@ const express = require('express')
     , { wordsToNumbers } = require('words-to-numbers')
     , app = express()
     , request = require("request");
+
 var priceListDD = require("./priceListDD.js")
-  , priceListWS = require("./priceListWS.js");
+  , priceListWS = require("./priceListWS.js")
+  , packageData = require('./packageDb.js');
+
 //API KEY for Google Distance Matrix API
 const API_KEY = "AIzaSyC0KZOj0sO4UHi2fLyDhsGnfV7GZZxGdfM";
 
@@ -28,6 +31,8 @@ app.use(bodyParser.json());
 app.post('/callWebhook', function(req, res) {
     console.log('Inside enquire order')
     var speech = 'This is the default speech'
+      , openCounter = 0
+      , ofd = 0
       , contextOut
       , intent = req.body.result && req.body.result.metadata.intentName ? req.body.result.metadata.intentName : "noIntent"
       , contexts =  req.body.result && req.body.result.contexts ? req.body.result.contexts : "noContexts";
@@ -210,29 +215,39 @@ app.post('/callWebhook', function(req, res) {
     if(intent === 'checkPackageStatus'){
       console.log('Package Database :', packageData.packageDb);
       packageData.packageDb.forEach(function(element){
-        if(element.status === 'open'){
+        if(element.status === 'transit'){
           openCounter ++;
+        } else if(element.status === 'outForDelivery'){
+          ofd ++;
         }
       })
-      if(openCounter == 0){
-        speech = 'You have no open packages. Anything else I can help you with?'
+      if(openCounter == 0 && ofd == 0){
+        speech = 'You have no packages to track. Anything else I can help you with?'
       }
-      else if(openCounter == 1){
+      else if(openCounter == 1 && ofd == 0){
         packageData.packageDb.forEach(function(element){
-          if(element.status === 'open'){
+          if(element.status === 'transit'){
             var deliveryTimeRem = (element.deliveryTime - new Date())/60000;
-            speech = 'It has left our store and will reach you in the next '
+            speech = 'Your package is in transit to '+element.destination+' and will reach you in the next '
                       + Math.ceil(deliveryTimeRem) + ' minutes. Would you like me to help you with anything else?'
           }
         })
       }
+      else if(openCounter == 0 && ofd == 1){
+        packageData.packageDb.forEach(function(element){
+          if(element.status === 'outForDelivery'){
+            speech = 'Your package to '+element.destination+' which sent on '+element.packageSentDate
+                +' is out for delivery and will be delivered by end of the day. Would you like me to help you with anything else?'
+          }
+        })   
+      }
       else{
-        speech = 'You have ' + openCounter + ' open packages.'
+        speech = 'You have ' + openCounter + ' packages in transit and '+ofd+' package is out for delivery'
         var tempCount = 1;
         packageData.packageDb.forEach(function(element){
           if(element.status === 'open'){
             speech = speech + ' Package ' + tempCount + ' is for ' + element.value
-                     + ' and it was placed on ' + element.packagePlacementDate + '.'
+                     + ' and it was placed on ' + element.packageSentDate + ' to '+element.destination
             tempCount++;
           }
         })
@@ -240,7 +255,32 @@ app.post('/callWebhook', function(req, res) {
       }
       responseToAPI(speech);
     }
- 
+   else if(intent === 'packageNo-status'){
+      var packageNo = req.body.result.parameters.packageN ? parseInt(req.body.result.parameters.packageN) : 'noOrderNumber'
+      if(packageNo === 'noOrderNumber'){
+        speech = 'Sorry! Not able to help you this time. Do you want me to help you with anything else?'
+      }
+      else{
+        var packageCounter = 0;
+        for(var i = 0; i < packageData.packageDb.length; i++){
+          if(packageData.packageDb[i].status === 'transit'){
+            packageCounter++;
+            if(packageCounter == packageNo){
+              var deliveryTimeRem = (packageData.packageDb[i].deliveryTime - new Date())/60000;
+    //                   speech = 'It has left our store and will reach you in the next '
+    //                             + Math.ceil(deliveryTimeRem) + ' minutes . Would you like me to help you with anything else?'
+                 speech = 'Your package is in transit to '+element.destination+' and will reach you in the next '
+                         + Math.ceil(deliveryTimeRem) + ' minutes. Would you like me to help you with anything else?'
+              if(packageData.packageDb[i].shipped === 'outForDelivery'){
+                speech = 'It is yet to be shipped but will reach you on time. Anything else I can help you with?'
+              }
+              break;
+            }
+          }
+        }
+      }
+      responseToAPI(speech);
+    }
     
     else{
       console.log('No intent matched!!')
