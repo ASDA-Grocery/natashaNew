@@ -290,7 +290,8 @@ app.post('/callWebhook', function(req, res) {
                 console.log('-- > ', packageData.packageDb[i].destination.toUpperCase(), packageDest.toUpperCase())
               var deliveryTimeRem = (packageData.packageDb[i].deliveryTime - new Date())/60000;
                  speech = 'Your package is in transit to '+packageData.packageDb[i].destination+' and will reach your nearest distribution center in the next '
-                         + Math.ceil(deliveryTimeRem) + ' minutes. Would you like me to help you with anything else?'
+                         + Math.ceil(deliveryTimeRem) + ' minutes. Would you like me to help you with anything else?';
+                console.log(-- > -- >, deliveryTimeRem, speech);
               if(packageData.packageDb[i].shipped === 'outForDelivery'){
                 speech = 'It is yet to be shipped but will reach you on time. Anything else I can help you with?'
               }
