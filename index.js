@@ -207,6 +207,41 @@ app.post('/callWebhook', function(req, res) {
       }      
     }
     
+    if(intent === 'checkPackageStatus'){
+      console.log('Package Database :', packageData.packageDb);
+      packageData.packageDb.forEach(function(element){
+        if(element.status === 'open'){
+          openCounter ++;
+        }
+      })
+      if(openCounter == 0){
+        speech = 'You have no open packages. Anything else I can help you with?'
+      }
+      else if(openCounter == 1){
+        packageData.packageDb.forEach(function(element){
+          if(element.status === 'open'){
+            var deliveryTimeRem = (element.deliveryTime - new Date())/60000;
+            speech = 'It has left our store and will reach you in the next '
+                      + Math.ceil(deliveryTimeRem) + ' minutes. Would you like me to help you with anything else?'
+          }
+        })
+      }
+      else{
+        speech = 'You have ' + openCounter + ' open packages.'
+        var tempCount = 1;
+        packageData.packageDb.forEach(function(element){
+          if(element.status === 'open'){
+            speech = speech + ' Package ' + tempCount + ' is for ' + element.value
+                     + ' and it was placed on ' + element.packagePlacementDate + '.'
+            tempCount++;
+          }
+        })
+        speech = speech + ' Which one should I check?'
+      }
+      responseToAPI(speech);
+    }
+ 
+    
     else{
       console.log('No intent matched!!')
       speech = 'Sorry! Unable to Understand'
