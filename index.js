@@ -8,6 +8,7 @@ const express = require('express')
 var priceListDD = require("./priceListDD.js")
   , priceListWS = require("./priceListWS.js")
   , packageData = require('./packageDb.js')
+  , shoppingData = require('./shoppingList.js')
   , productData = require('./productList.js');
 
 //API KEY for Google Distance Matrix API
