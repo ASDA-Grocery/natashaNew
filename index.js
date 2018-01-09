@@ -4,6 +4,11 @@ const express = require('express')
     , bodyParser = require('body-parser')
     , { wordsToNumbers } = require('words-to-numbers')
     , app = express();
+    , request = require("request");
+var priceListDD = require("./priceListDD.js");
+  , priceListWS = require("./priceListWS.js");
+//API KEY for Google Distance Matrix API
+const API_KEY = "AIzaSyC0KZOj0sO4UHi2fLyDhsGnfV7GZZxGdfM";
 
 // const google = require('googleapis')
 //     , calendar = google.calendar('v3')
@@ -63,6 +68,90 @@ app.post('/callWebhook', function(req, res) {
         responseToAPI(speech);
       }
       else{
+        let origin = originCity
+          , destination = destinationCity
+          , days = numberOfDays
+          , weight = parcelWeight
+          , size = parcelLength;
+        
+        distanceCalc(origin, destination, days, weight, size);
+          
+        // calculating the distance between two cities
+        function distanceCalc(origin, destination, days, weight, size) {
+          request(
+            `https://maps.googleapis.com/maps/api/distancematrix/json?origins=${origin}&destinations=${destination}&key=${API_KEY}`,
+            {
+              json: true
+            },
+            (err, res, body) => {
+              if (err) {
+                return console.log(err);
+              }
+              let distance = parseInt(
+                body.rows[0].elements[0].distance.text.substring(0, 3)
+              );
+              let priceForDaysAndDistance = getPriceBasedOnDistanceAndDays(
+                distance,
+                days
+              );
+              let priceForWeightAndSize = getPriceBasedOnWeightAndSize(weight, size);
+              console.log("Cost based on Weight and Size: " + priceForWeightAndSize);
+              console.log("Cost based on Distance and Days: " + priceForDaysAndDistance);
+              return distance;
+            }
+          );
+        }
+        
+        // calculating the cost based on the distance and days
+        function getPriceBasedOnDistanceAndDays(distance, days) {
+          console.log("distance in kms " + distance);
+          console.log("No. of days " + days);
+          var i = 0;
+          while (i < priceListDD.length) {
+            if (distance <= priceListDD[i].distance && days <= priceListDD[i].days) {
+              return priceListDD[i].price;
+            }
+            if (distance > priceListDD[i].distance && distance <= priceListDD[i + 1].distance) {
+              for (var j = 0; j < priceListDD.length; j++) {
+                if (priceListDD[j].distance == priceListDD[i + 1].distance) {
+                  if (days <= priceListDD[j].days) {
+                    return priceListDD[j].price;
+                  }
+                  if (days > priceListDD[j].days && days <= priceListDD[j + 1].days) {
+                    return priceListDD[j + 1].price;
+                  }
+                }
+              }
+            }
+            i++;
+          }
+        }
+        
+        // calculating the cost based on weight and size of the parcel
+        function getPriceBasedOnWeightAndSize(weight, size) {
+          console.log("Parcel weight in kg " + weight);
+          console.log("Parcel size in inches " + size);
+          var i = 0;
+          while (i < priceListWS.length) {
+            if (weight <= priceListWS[i].weight && size <= priceListWS[i].size) {
+              return priceListWS[i].price;
+            }
+            if (weight > priceListWS[i].weight && weight <= priceListWS[i + 1].weight) {
+              for (var j = 0; j < priceListWS.length; j++) {
+                if (priceListWS[j].weight == priceListWS[i + 1].weight) {
+                  if (size <= priceListWS[j].size) {
+                    return priceListWS[j].price;
+                  }
+                  if (size > priceListWS[j].size && size <= priceListWS[j + 1].size) {
+                    return priceListWS[j + 1].price;
+                  }
+                }
+              }
+            }
+            i++;
+          }
+        }
+          
         speech = 'The cost is 60 pounds';
         responseToAPI(speech);
       }      
