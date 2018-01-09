@@ -241,12 +241,12 @@ app.post('/callWebhook', function(req, res) {
         })   
       }
       else{
-        speech = 'You have ' + openCounter + ' packages in transit and '+ofd+' package is out for delivery'
+        speech = 'You have ' + openCounter + ' packages in transit and '+ofd+' package is out for delivery.'
         var tempCount = 1;
         packageData.packageDb.forEach(function(element){
           if(element.status === 'open'){
             speech = speech + ' Package ' + tempCount + ' is for ' + element.value
-                     + ' and it was placed on ' + element.packageSentDate + ' to '+element.destination
+                     + ' and it was placed on ' + element.packageSentDate + ' to '+element.destination+'.'
             tempCount++;
           }
         })
