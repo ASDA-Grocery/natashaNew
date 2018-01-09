@@ -5,7 +5,7 @@ const express = require('express')
     , { wordsToNumbers } = require('words-to-numbers')
     , app = express()
     , request = require("request");
-var priceListDD = require("./priceListDD.js");
+var priceListDD = require("./priceListDD.js")
   , priceListWS = require("./priceListWS.js");
 //API KEY for Google Distance Matrix API
 const API_KEY = "AIzaSyC0KZOj0sO4UHi2fLyDhsGnfV7GZZxGdfM";
