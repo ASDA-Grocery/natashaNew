@@ -92,7 +92,7 @@ app.post('/callWebhook', function(req, res) {
     if(intent === 'selectPickupSlot'){
       console.log('Inside selectPickupSlot Intent')
       var timeOfDay = req.body.result.parameters.timeOfDay ? req.body.result.parameters.timeOfDay : 'noTimeOfDay'
-        , slotStartTime = req.body.result.parameters.slotStartTime ? req.body.result.parameters.timeOfDay : 'noSlotStartTime'
+        , slotStartTime = req.body.result.parameters.slotStartTime ? req.body.result.parameters.slotStartTime : 'noSlotStartTime'
       if(timeOfDay === 'noTimeOfDay' || slotStartTime === 'noSlotStartTime'){
         speech = 'Please specify time of the day and slot start time properly.';
         responseToAPI(speech);
