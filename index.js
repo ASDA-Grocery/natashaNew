@@ -89,26 +89,30 @@ app.post('/callWebhook', function(req, res) {
       }      
     }
     
-//     if(intent === 'bookPickupSlot'){
-//       console.log('Inside bookPickupSlot Intent')
-//       var typeOfProducts = req.body.result.parameters.typeOfProducts ? req.body.result.parameters.originCity : 'noTypeOfProducts'
-//       if(typeOfProducts === 'noTypeOfProducts'){
-//         speech = 'Please specify type of product';
-//         responseToAPI(speech);
-//       }
-//       else{
-//         if(typeOfProducts === 'fragile'){
-//             speech = 'An additional surcharge of 40 pounds will be added to base delivery charge.';
-//         }
-//         else if(typeOfProducts === 'normal'){
-//             speech = 'No additional surcharge is required.';
-//         }
-//         else{
-//             speech = 'Sorry! this type of product delivery is not available!'
-//         }
-//         responseToAPI(speech);
-//       }      
-//     }
+    if(intent === 'selectPickupSlot'){
+      console.log('Inside selectPickupSlot Intent')
+      var timeOfDay = req.body.result.parameters.timeOfDay ? req.body.result.parameters.timeOfDay : 'noTimeOfDay'
+        , slotStartTime = req.body.result.parameters.slotStartTime ? req.body.result.parameters.timeOfDay : 'noSlotStartTime'
+      if(timeOfDay === 'noTimeOfDay' || slotStartTime === 'noSlotStartTime'){
+        speech = 'Please specify time of the day and slot start time properly.';
+        responseToAPI(speech);
+      }
+      else{
+        if(slotStartTime === 9 && (timeOfDay === 'AM' || timeOfDay === 'am')){
+            speech = 'Okay! A pickup slot from 9 AM to 12 PM has been booked for you.'
+        }
+        else if(slotStartTime === 12 && (timeOfDay === 'PM' || timeOfDay === 'pm')){
+            speech = 'Okay! A pickup slot from 12 PM to 3 PM has been booked for you.'
+        }
+        else if(slotStartTime === 3 && (timeOfDay === 'PM' || timeOfDay === 'pm')){
+            speech = 'Okay! A pickup slot from 3 PM to 6 PM has been booked for you.'
+        }
+        else{
+            speech = 'Sorry! This slot is not available.'
+        }
+        responseToAPI(speech);
+      }      
+    }
     
     else{
       console.log('No intent matched!!')
