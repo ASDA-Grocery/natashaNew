@@ -3,7 +3,7 @@
 const express = require('express')
     , bodyParser = require('body-parser')
     , { wordsToNumbers } = require('words-to-numbers')
-    , app = express();
+    , app = express()
     , request = require("request");
 var priceListDD = require("./priceListDD.js");
   , priceListWS = require("./priceListWS.js");
