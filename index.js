@@ -198,13 +198,13 @@ app.post('/callWebhook', function(req, res) {
       }
       else{
         if(slotStartTime === 9 && (timeOfDay === 'AM' || timeOfDay === 'am')){
-            speech = 'Okay! A pickup slot from 9 AM to 12 PM has been booked for you.'
+            speech = 'Okay! A pickup slot from 9 AM to 10 AM has been booked for you.'
         }
         else if(slotStartTime === 12 && (timeOfDay === 'PM' || timeOfDay === 'pm')){
-            speech = 'Okay! A pickup slot from 12 PM to 3 PM has been booked for you.'
+            speech = 'Okay! A pickup slot from 12 PM to 1 PM has been booked for you.'
         }
         else if(slotStartTime === 3 && (timeOfDay === 'PM' || timeOfDay === 'pm')){
-            speech = 'Okay! A pickup slot from 3 PM to 6 PM has been booked for you.'
+            speech = 'Okay! A pickup slot from 3 PM to 4 PM has been booked for you.'
         }
         else{
             speech = 'Sorry! This slot is not available.'
