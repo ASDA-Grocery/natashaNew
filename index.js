@@ -215,7 +215,7 @@ app.post('/callWebhook', function(req, res) {
     
     else if(intent === 'bookPickupSlot'){
       console.log('Inside bookPickupSlot Intent')
-      var dateOfPickup = req.body.result.parameters.dateOfPickup ? req.body.result.parameters.timeOfDay : 'noDateOfPickup'
+      var dateOfPickup = req.body.result.parameters.dateOfPickup ? req.body.result.parameters.dateOfPickup : 'noDateOfPickup'
       if(dateOfPickup === 'noDateOfPickup'){
         speech = 'Please specify the date of pickup as today or tomorrow.';
         responseToAPI(speech);
