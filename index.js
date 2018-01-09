@@ -97,6 +97,12 @@ app.post('/callWebhook', function(req, res) {
               let priceForWeightAndSize = getPriceBasedOnWeightAndSize(weight, size);
               console.log("Cost based on Weight and Size: " + priceForWeightAndSize);
               console.log("Cost based on Distance and Days: " + priceForDaysAndDistance);
+              if(priceForWeightAndSize > priceForDaysAndDistance){
+                speech = 'The cost of delivery will be ' + priceForWeightAndSize + ' Pounds.'
+              }
+              else{
+                speech = 'The cost of delivery will be ' + priceForDaysAndDistance + ' Pounds.'
+              }
               return distance;
             }
           );
@@ -151,8 +157,6 @@ app.post('/callWebhook', function(req, res) {
             i++;
           }
         }
-          
-        speech = 'The cost is 60 pounds';
         responseToAPI(speech);
       }      
     } 
