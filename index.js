@@ -211,93 +211,93 @@ app.post('/callWebhook', function(req, res) {
       }      
     }
     
-    if(intent === 'checkPackageStatus'){
-      console.log('Package Database :', packageData.packageDb);
-      packageData.packageDb.forEach(function(element){
-        if(element.status === 'transit'){
-          openCounter ++;
-        } else if(element.status === 'outForDelivery'){
-          ofd ++;
-        }
-      })
-      if(openCounter == 0 && ofd == 0){
-        speech = 'You have no packages to track. Anything else I can help you with?'
-      }
-      else if(openCounter == 1 && ofd == 0){
-        packageData.packageDb.forEach(function(element){
-          if(element.status === 'transit'){
-            var deliveryTimeRem = (element.deliveryTime - new Date())/60000;
-            speech = 'Your package is in transit to '+element.destination+' and will reach you in the next '
-                      + Math.ceil(deliveryTimeRem) + ' minutes. Would you like me to help you with anything else?'
-          }
-        })
-      }
-      else if(openCounter == 0 && ofd == 1){
-        packageData.packageDb.forEach(function(element){
-          if(element.status === 'outForDelivery'){
-            speech = 'Your package to '+element.destination+' which sent on '+element.packageSentDate
-                +' is out for delivery and will be delivered by end of the day. Would you like me to help you with anything else?'
-          }
-        })   
-      }
-      else{
-        speech = 'You have ' + openCounter + ' packages in transit and '+ofd+' package is out for delivery.'
-        var tempCount = 1;
-        packageData.packageDb.forEach(function(element){
-          if(element.status === 'open'){
-            speech = speech + ' Package ' + tempCount + ' is for ' + element.value
-                     + ' and it was sent on ' + element.packageSentDate + ' to '+element.destination+'.'
-            tempCount++;
-          }
-        })
-        speech = speech + ' Which one should I check?'
-      }
-      responseToAPI(speech);
-    }
-   else if(intent === 'packageNo-status'){
-      var packageNo = req.body.result.parameters.packageN ? req.body.result.parameters.packageN : 'noOrderNumber'
-      if(packageNo === 'noOrderNumber'){
-        speech = 'Sorry! Not able to help you this time. Do you want me to help you with anything else?'
-      }
-      else{
-        var packageCounter = 0;
-        for(var i = 0; i < packageData.packageDb.length; i++){
-          if(packageData.packageDb[i].status === 'transit'){
-            packageCounter++;
-            if(packageCounter == packageNo){
-              var deliveryTimeRem = (packageData.packageDb[i].deliveryTime - new Date())/60000;
-                 speech = 'Your package is in transit to '+packageData.packageDb[i].destination+' and will reach your nearest distribution center in the next '
-                         + Math.ceil(deliveryTimeRem) + ' minutes. Would you like me to help you with anything else?'
-              if(packageData.packageDb[i].shipped === 'outForDelivery'){
-                speech = 'It is yet to be shipped but will reach you on time. Anything else I can help you with?'
-              }
-              break;
-            }
-          }
-        }
-      }
-      responseToAPI(speech);
-    }
-    else if(intent === 'packageDest-status'){
-      var packageDest = req.body.result.parameters.packageDest ? req.body.result.parameters.packageDest : 'noDestination'
-      if(packageDest === 'noDestination'){
-        speech = 'Sorry! Not able to help you this time. Do you want me to help you with anything else?'
-      }
-      else{
-         for(var i = 0; i < packageData.packageDb.length; i++){
-          if(packageData.packageDb[i].status === 'transit'){
-            if(packageData.packageDb[i].destination.toUpperCase() == packageDest.toUpperCase()){
-                console.log('-- > ', packageData.packageDb[i].destination.toUpperCase(), packageDest.toUpperCase())
-              var deliveryTimeRem = (packageData.packageDb[i].deliveryTime - new Date())/60000;
-                 speech = 'Your package is in transit to '+packageData.packageDb[i].destination+' and will reach your nearest distribution center in the next '
-                         + Math.ceil(deliveryTimeRem) + ' minutes. Would you like me to help you with anything else?';
-                console.log('-- > -- >', deliveryTimeRem, speech);
-              break;
-            }
-          }
-        }
-      }
-    }
+//     if(intent === 'checkPackageStatus'){
+//       console.log('Package Database :', packageData.packageDb);
+//       packageData.packageDb.forEach(function(element){
+//         if(element.status === 'transit'){
+//           openCounter ++;
+//         } else if(element.status === 'outForDelivery'){
+//           ofd ++;
+//         }
+//       })
+//       if(openCounter == 0 && ofd == 0){
+//         speech = 'You have no packages to track. Anything else I can help you with?'
+//       }
+//       else if(openCounter == 1 && ofd == 0){
+//         packageData.packageDb.forEach(function(element){
+//           if(element.status === 'transit'){
+//             var deliveryTimeRem = (element.deliveryTime - new Date())/60000;
+//             speech = 'Your package is in transit to '+element.destination+' and will reach you in the next '
+//                       + Math.ceil(deliveryTimeRem) + ' minutes. Would you like me to help you with anything else?'
+//           }
+//         })
+//       }
+//       else if(openCounter == 0 && ofd == 1){
+//         packageData.packageDb.forEach(function(element){
+//           if(element.status === 'outForDelivery'){
+//             speech = 'Your package to '+element.destination+' which sent on '+element.packageSentDate
+//                 +' is out for delivery and will be delivered by end of the day. Would you like me to help you with anything else?'
+//           }
+//         })   
+//       }
+//       else{
+//         speech = 'You have ' + openCounter + ' packages in transit and '+ofd+' package is out for delivery.'
+//         var tempCount = 1;
+//         packageData.packageDb.forEach(function(element){
+//           if(element.status === 'open'){
+//             speech = speech + ' Package ' + tempCount + ' is for ' + element.value
+//                      + ' and it was sent on ' + element.packageSentDate + ' to '+element.destination+'.'
+//             tempCount++;
+//           }
+//         })
+//         speech = speech + ' Which one should I check?'
+//       }
+//       responseToAPI(speech);
+//     }
+//    else if(intent === 'packageNo-status'){
+//       var packageNo = req.body.result.parameters.packageN ? req.body.result.parameters.packageN : 'noOrderNumber'
+//       if(packageNo === 'noOrderNumber'){
+//         speech = 'Sorry! Not able to help you this time. Do you want me to help you with anything else?'
+//       }
+//       else{
+//         var packageCounter = 0;
+//         for(var i = 0; i < packageData.packageDb.length; i++){
+//           if(packageData.packageDb[i].status === 'transit'){
+//             packageCounter++;
+//             if(packageCounter == packageNo){
+//               var deliveryTimeRem = (packageData.packageDb[i].deliveryTime - new Date())/60000;
+//                  speech = 'Your package is in transit to '+packageData.packageDb[i].destination+' and will reach your nearest distribution center in the next '
+//                          + Math.ceil(deliveryTimeRem) + ' minutes. Would you like me to help you with anything else?'
+//               if(packageData.packageDb[i].shipped === 'outForDelivery'){
+//                 speech = 'It is yet to be shipped but will reach you on time. Anything else I can help you with?'
+//               }
+//               break;
+//             }
+//           }
+//         }
+//       }
+//       responseToAPI(speech);
+//     }
+//     else if(intent === 'packageDest-status'){
+//       var packageDest = req.body.result.parameters.packageDest ? req.body.result.parameters.packageDest : 'noDestination'
+//       if(packageDest === 'noDestination'){
+//         speech = 'Sorry! Not able to help you this time. Do you want me to help you with anything else?'
+//       }
+//       else{
+//          for(var i = 0; i < packageData.packageDb.length; i++){
+//           if(packageData.packageDb[i].status === 'transit'){
+//             if(packageData.packageDb[i].destination.toUpperCase() == packageDest.toUpperCase()){
+//                 console.log('-- > ', packageData.packageDb[i].destination.toUpperCase(), packageDest.toUpperCase())
+//               var deliveryTimeRem = (packageData.packageDb[i].deliveryTime - new Date())/60000;
+//                  speech = 'Your package is in transit to '+packageData.packageDb[i].destination+' and will reach your nearest distribution center in the next '
+//                          + Math.ceil(deliveryTimeRem) + ' minutes. Would you like me to help you with anything else?';
+//                 console.log('-- > -- >', deliveryTimeRem, speech);
+//               break;
+//             }
+//           }
+//         }
+//       }
+//     }
     
     else{
       console.log('No intent matched!!')
