@@ -75,29 +75,29 @@ app.post('/callWebhook', function(req, res) {
       }
       else{
         
-        if(timePeriod === 'weeks'){
-            numberOfDays = numberOfDays * 7;
-        }
-        else if(timePeriod === 'months'){
-            numberOfDays = numberOfDays * 30;
-        }
+//         if(timePeriod === 'weeks'){
+//             numberOfDays = numberOfDays * 7;
+//         }
+//         else if(timePeriod === 'months'){
+//             numberOfDays = numberOfDays * 30;
+//         }
           
-        if(parcelLength.unit === 'ft'){
-            parcelLength.amount = parcelLength.amount * 12;
-        }
-        else if(parcelLength.unit === 'm'){
-            parcelLength.amount = parcelLength.amount * 39.3701;
-        }
-        else if(parcelLength.unit === 'cm'){
-            parcelLength.amount = parcelLength.amount * 0.393701;
-        }
+//         if(parcelLength.unit === 'ft'){
+//             parcelLength.amount = parcelLength.amount * 12;
+//         }
+//         else if(parcelLength.unit === 'm'){
+//             parcelLength.amount = parcelLength.amount * 39.3701;
+//         }
+//         else if(parcelLength.unit === 'cm'){
+//             parcelLength.amount = parcelLength.amount * 0.393701;
+//         }
           
-        if(parcelWeight.unit === 'kg'){
-            parcelWeight.amount = parcelWeight.amount * 2.20462;
-        }
-        else if(parcelWeight.unit === 'g'){
-            parcelWeight.amount = parcelWeight.amount * 0.00220462;
-        }
+//         if(parcelWeight.unit === 'kg'){
+//             parcelWeight.amount = parcelWeight.amount * 2.20462;
+//         }
+//         else if(parcelWeight.unit === 'g'){
+//             parcelWeight.amount = parcelWeight.amount * 0.00220462;
+//         }
           
         let origin = originCity
           , destination = destinationCity
