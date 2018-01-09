@@ -71,8 +71,8 @@ app.post('/callWebhook', function(req, res) {
         let origin = originCity
           , destination = destinationCity
           , days = numberOfDays
-          , weight = parcelWeight
-          , size = parcelLength;
+          , weight = parcelWeight.amount
+          , size = parcelLength.amount;
         
         distanceCalc(origin, destination, days, weight, size);
           
