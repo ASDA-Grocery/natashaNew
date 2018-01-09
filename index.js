@@ -2,7 +2,6 @@
 
 const express = require('express')
     , bodyParser = require('body-parser')
-    , { wordsToNumbers } = require('words-to-numbers')
     , app = express()
     , request = require("request");
 
@@ -256,7 +255,7 @@ app.post('/callWebhook', function(req, res) {
       responseToAPI(speech);
     }
    else if(intent === 'packageNo-status'){
-      var packageNo = req.body.result.parameters.packageN ? parseInt(req.body.result.parameters.packageN) : 'noOrderNumber'
+      var packageNo = req.body.result.parameters.packageN ? req.body.result.parameters.packageN : 'noOrderNumber'
       if(packageNo === 'noOrderNumber'){
         speech = 'Sorry! Not able to help you this time. Do you want me to help you with anything else?'
       }
