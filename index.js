@@ -210,7 +210,176 @@ app.post('/callWebhook', function(req, res) {
         responseToAPI(speech);
       }      
     }
+
+    else if(intent === 'findProducts'){
+      console.log('Product List :', productData.productList)
+      var mineralContent = req.body.result.parameters.mineralContent ? req.body.result.parameters.mineralContent : 'noMineralContent'
+      var mineralType = req.body.result.parameters.mineralType ? req.body.result.parameters.mineralType : 'noMineralType'
+      var productType = req.body.result.parameters.productType ? req.body.result.parameters.productType : 'noProductType'
+      if(mineralType === 'noMineralType' || productType === 'noProductType' || mineralContent === 'noMineralContent'){
+        speech = 'Please specify a proper product with proper details.'
+      }
+      else{
+        var countObj = {}
+          , keyArray = new Array();
+        productData.productList.forEach(function(element){
+          if(!(element[mineralType] in countObj)){
+            var tempKey = element[mineralType]
+            countObj[tempKey] = 1;
+            keyArray.push(tempKey)
+          }
+          else{
+            var tempKey = element[mineralType]
+            var tempVal = countObj[tempKey]
+            countObj[tempKey] = tempVal + 1;
+          }
+        })
+        keyArray.sort(function(a,b){
+          return a - b;
+        });
+        if(mineralContent === 'high'){
+          speech = 'We have '+ countObj[keyArray[keyArray.length - 1]] + ' options with '
+                    + keyArray[keyArray.length - 1] + ' grams and ' + countObj[keyArray[keyArray.length - 2]]
+                    + ' options with ' + keyArray[keyArray.length - 2]+ ' grams in each bar.'
+        }
+        else if(mineralContent === 'low'){
+          speech = 'We have '+ countObj[keyArray[0]] + ' options with '
+                    + keyArray[0] + ' grams and ' + countObj[keyArray[1]]
+                    + ' options with ' + keyArray[1] + ' grams in each bar.'
+        }
+        else{
+          speech = 'Sorry this level of content is not available.'
+        }
+      }
+      responseToAPI(speech);
+    }
     
+    else if(intent === 'findSpecificContentProduct'){
+      console.log('inside findSpecificContentProduct')
+      console.log('checking contexts: ', req.body.result.contexts)
+      var index = req.body.result.contexts.findIndex((x) => x.name === 'searchproduct')
+      var initialIndex = req.body.result.contexts.findIndex((x) => x.name === 'initialcontent')
+      var mineralValue = req.body.result.contexts[index].parameters.number ? parseInt(req.body.result.contexts[index].parameters.number) : 'noMineralValue'
+      var mineralType = req.body.result.parameters.mineralType ? req.body.result.parameters.mineralType : 'noMineralType'
+      var initialMineralType = req.body.result.contexts[initialIndex].parameters.initialMineralType ? req.body.result.contexts[initialIndex].parameters.initialMineralType : 'noInitialMineralType'
+      var mineralContent = req.body.result.parameters.mineralContent ? req.body.result.parameters.mineralContent : 'noMineralContent'
+      console.log('Mineral Value:', mineralValue)
+      console.log('Mineral Type:', mineralType)
+      console.log('Initial Mineral Type:', initialMineralType)
+      console.log('Mineral Content:', mineralContent)
+      if(mineralValue === 'noMineralValue'){
+        speech = 'No mineralValue context'
+      }
+      else{
+        speech = ''
+        var contentLevel = -1
+          , productName
+          , totalProducts = productData.productList.length;
+        productData.productList.forEach(function(element){
+          if(mineralContent === 'low' || mineralContent === 'lower' || mineralContent === 'lowest'){
+            console.log('element initial mineral type: ', element[initialMineralType])
+            console.log('typeof initial mineral value : ', typeof element[initialMineralType])
+            console.log('typeof mineral value : ', typeof mineralValue)
+            if(element[initialMineralType] === mineralValue){
+              console.log('inside if dsyfdysf')
+              if(element[mineralType] < contentLevel || contentLevel < 0){
+                contentLevel = element[mineralType]
+                productName = element.productName;
+                console.log('ping')
+              }
+              else{
+                console.log('pong')
+              }
+            }
+            else{
+              console.log('pongsdhfgsdyu')
+            }
+          }
+          else if(mineralContent === 'high' || mineralContent === 'higher' || mineralContent === 'good' || mineralContent === 'highest'){
+            if(element[initialMineralType] === mineralValue){
+              if(contentLevel < 0 || element[mineralType] > contentLevel){
+                contentLevel = element[mineralType]
+                productName = element.productName;
+              }
+            }
+          }
+        })
+        speech = productName;
+        contextOut = [{"name":"addproductcart", "lifespan":5, "parameters":{'productName': productName}}]
+      }
+      responseToAPI(speech);
+    }
+    
+    else if(intent === 'optionsFindProduct'){
+      var index = req.body.result.contexts.findIndex((x) => x.name === 'searchproduct')
+      console.log('index ------> ',index);
+      var mineralValue = req.body.result.parameters.number ? req.body.result.parameters.number : 'noMineralValue'
+      var mineralType = req.body.result.contexts[index].parameters.mineralType ? req.body.result.contexts[index].parameters.mineralType : 'noMineralType'
+      if(mineralType === 'noMineralType'){
+        speech = 'No mineralType context'
+      }
+      else{
+        speech = ''
+        if(mineralValue != 'noMineralValue'){
+          productData.productList.forEach(function(element){
+            if(element[mineralType] == mineralValue){
+              speech = speech + element.productName + ', '
+            }
+          })
+          speech = speech.slice(0,-2)
+          var tempIndex = speech.lastIndexOf(',')
+          if(tempIndex != -1){
+            var tempSpeech = speech.substr(0, tempIndex) + ' &' + speech.substr(tempIndex+1, speech.length-1)
+            speech = tempSpeech
+            contextOut = [{"name":"initialcontent", "lifespan":5, "parameters":{'initialMineralType': mineralType}}]
+          }
+        }
+      }
+      responseToAPI(speech);
+    }
+    
+    else if(intent === 'addToCart&Checkout'){
+      var index = req.body.result.contexts.findIndex((x) => x.name === 'addproductcart')
+      var number = req.body.result.parameters.number ? req.body.result.parameters.number : 'noNumberIntegerValue'
+      var productName = req.body.result.contexts[index].parameters.productName ? req.body.result.contexts[index].parameters.productName : 'noProductName'
+      var checkoutBool = req.body.result.contexts[index].parameters.checkout ? req.body.result.contexts[index].parameters.checkout : 'noCheckout'
+
+      if(checkoutBool === 'noCheckout' || checkoutBool === ''){
+        var prodIndex = productData.productList.findIndex((x) => x.productName === productName)
+        var product = {
+          productId: productData.productList[prodIndex].productId,
+          productName: productName,
+          quantity: number
+        }
+        shoppingData.shoppingList.cart.productList.push(product)
+        console.log(shoppingData.shoppingList.cart.productList);
+        speech = number + ' ' + productName + ' added to the cart. Do you want to proceed to checkout?'
+      }
+      else{
+        var prodIndex = productData.productList.findIndex((x) => x.productName === productName)
+        var product = {
+          productId: productData.productList[prodIndex].productId,
+          productName: productName,
+          quantity: number
+        }
+        shoppingData.shoppingList.cart.productList.push(product)
+        speech = number + ' ' + productName + ' added to the cart. Would you like to pick them up from your nearest store or should I place a delivery request?.'
+      }
+      responseToAPI(speech)
+    }
+
+    else if(intent === 'checkoutAfterConfirmation'){
+      var negativeConfirmation = req.body.result.parameters.negativeConfirmation ? req.body.result.parameters.negativeConfirmationr : 'noNegativeConfirmation'
+      var positiveConfirmation = req.body.result.parameters.positiveConfirmation ? req.body.result.parameters.positiveConfirmation : 'noPositiveConfirmation'
+      if(negativeConfirmation === 'noNegativeConfirmation'){
+        speech = 'Would you like to pick them up from your nearest store or should I place a delivery request?.'
+      }
+      else{
+        speech = 'Alright. Is there anything else I can help now?'
+      }
+      responseToAPI(speech);
+    }
+   
     else if(intent === 'checkPackageStatus'){
       console.log('Package Database :', packageData.packageDb);
       packageData.packageDb.forEach(function(element){
