@@ -485,10 +485,10 @@ app.post('/callWebhook', function(req, res) {
         })   
       }
       else{
-        speech = 'You have ' + openCounter + ' packages in transit and '+ofd+' package is out for delivery.'
+        speech = 'You have ' + openCounter + ' package in transit and '+ofd+' package is out for delivery.'
         var tempCount = 1;
         packageData.packageDb.forEach(function(element){
-          if(element.status === 'open'){
+          if(element.status === 'transit' || element.status === 'outForDelivery'){
             speech = speech + ' Package ' + tempCount + ' is for ' + element.value
                      + ' and it was sent on ' + element.packageSentDate + ' to '+element.destination+'.'
             tempCount++;
