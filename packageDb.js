@@ -16,7 +16,7 @@ exports.packageDb = [
     ],
     packageSentDate: 'January 2, 2018',
     value: '20 $',
-    status: 'transit',
+    status: 'outForDelivery',
     destination: 'Dallas',
     shipped: 'false',
     deliveryTime: getPackageTime(30)
@@ -37,7 +37,7 @@ exports.packageDb = [
     ],
     packageSentDate: 'December 31, 2017',
     value: '35 $',
-    destination: 'New York',
+    destination: 'Chicago',
     status: 'transit',
     shipped: 'false',
     deliveryTime: getPackageTime(40)
