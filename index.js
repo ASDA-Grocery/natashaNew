@@ -252,14 +252,29 @@ app.post('/callWebhook', function(req, res) {
       else{
         console.log('Slot Start Time : ', slotStartTime);
         console.log('Time of Day : ', timeOfDay);
-        if(slotStartTime === 9 && (timeOfDay === 'AM' || timeOfDay === 'am')){
-            speech = 'Okay! A pickup slot from 9 AM to 10 AM has been booked for you.'
+        if(slotStartTime === 9){
+            if(timeOfDay === 'AM' || timeOfDay === 'am'){
+                speech = 'Okay! A pickup slot from 9 AM to 10 AM has been booked for you.'
+            }
+            else{
+                speech = 'Sorry! This slot is not available.'
+            }
         }
-        else if(slotStartTime === 12 && (timeOfDay === 'PM' || timeOfDay === 'pm')){
-            speech = 'Okay! A pickup slot from 12 PM to 1 PM has been booked for you.'
+        else if(slotStartTime === 12){
+            if(timeOfDay === 'PM' || timeOfDay === 'pm'){
+                speech = 'Okay! A pickup slot from 12 PM to 1 PM has been booked for you.'
+            }
+            else{
+                speech = 'Sorry! This slot is not available.'
+            }            
         }
-        else if(slotStartTime === 3 && (timeOfDay === 'PM' || timeOfDay === 'pm')){
-            speech = 'Okay! A pickup slot from 3 PM to 4 PM has been booked for you.'
+        else if(slotStartTime === 3){
+            if(timeOfDay === 'PM' || timeOfDay === 'pm'){
+                speech = 'Okay! A pickup slot from 3 PM to 4 PM has been booked for you.'
+            }
+            else{
+                speech = 'Sorry! This slot is not available.'
+            }
         }
         else{
             speech = 'Sorry! This slot is not available.'
