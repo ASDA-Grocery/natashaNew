@@ -250,6 +250,8 @@ app.post('/callWebhook', function(req, res) {
         responseToAPI(speech);
       }
       else{
+        console.log('Slot Start Time : ', slotStartTime);
+        console.log('Time of Day : ', timeOfDay);
         if(slotStartTime === 9 && (timeOfDay === 'AM' || timeOfDay === 'am')){
             speech = 'Okay! A pickup slot from 9 AM to 10 AM has been booked for you.'
         }
