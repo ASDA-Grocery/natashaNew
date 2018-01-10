@@ -454,6 +454,35 @@ app.post('/callWebhook', function(req, res) {
       }
       responseToAPI(speech);
     }
+    
+    else if(intent === 'confirmDeliveryAddress'){
+      var dateOfDelivery = req.body.result.parameters.dateOfDelivery ? req.body.result.parameters.dateOfDelivery : 'noDateOfDelivery'
+      var address = req.body.result.parameters.address ? req.body.result.parameters.address : 'noAddress'
+      if(address === 'noAddress' || dateOfDelivery === 'noDateOfDelivery'){
+        speech = 'Please specify delivery address and delivery date properly?.'
+      }
+      else{
+        if(address === 'home' || address === 'Home'){
+            if(dateOfDelivery === 'tomorrow' || dateOfDelivery === 'Tomorrow'){
+                speech = 'There is a pickup scheduled for tomorrow for you, do you want to club both both pickup and delivery together?'
+                contextOut = [{"name":"clubDelivery", "lifespan":5, "parameters":{'clubPickupCall': true}]
+            }
+            else{
+                speech = 'Your order has been placed and will be delivered to you by today evening.'
+            }
+        }
+        else{
+            if(dateOfDelivery === 'tomorrow' || dateOfDelivery === 'Tomorrow'){
+                speech = 'Your order has been placed and you can pick it up from your nearest store by tomorrow evening.'
+            }
+            else{
+                speech = 'Your order has been placed and you can pick it up from your nearest store by evening today.'
+            }
+        }
+      }
+      responseToAPI(speech);
+    }
+    
    
     else if(intent === 'checkPackageStatus'){
       console.log('Package Database :', packageData.packageDb);
