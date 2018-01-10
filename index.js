@@ -129,7 +129,7 @@ app.post('/callWebhook', function(req, res) {
               console.log("Cost based on Weight and Size: " + priceForWeightAndSize);
               console.log("Cost based on Distance and Days: " + priceForDaysAndDistance);
               if(priceForWeightAndSize > priceForDaysAndDistance){
-                speech = 'The cost of delivery will be ' + priceForWeightAndSize + ' Pounds.'
+                speech = 'The cost of delivery will be ' + priceForWeightAndSize + ' $. '
                 if(parcelWeight.amount > 70){
                     speech = speech + 'Also there might be some extra surcharges associated with this delivery.'
                 }
