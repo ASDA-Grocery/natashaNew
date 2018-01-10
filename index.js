@@ -228,13 +228,13 @@ app.post('/callWebhook', function(req, res) {
       }
       else{
         if(dateOfPickup === 'today'){
-            speech = 'We have three pickup slots. The first one is from 9 AM to 10 AM, the second one is from 12 PM to 1 PM and the last one is from 3 PM to 4 PM. Which one do you want to select?.'
+            speech = 'We have three pickup slots. The first one is from 9 AM to 10 AM, the second one is from 12 PM to 1 PM and the last one is from 3 PM to 4 PM. Which one do you want to select?'
         }
         else if(dateOfPickup === 'tomorrow'){
-            speech = 'We have three pickup slots. The first one is from 9 AM to 10 AM, the second one is from 12 PM to 1 PM and the last one is from 3 PM to 4 PM. Also I see that there is delivery scheduled for tomorrow 3 PM. Do you want to schedule the pickup at that time or you want to select a new available slot?.'
+            speech = 'We have three pickup slots. The first one is from 9 AM to 10 AM, the second one is from 12 PM to 1 PM and the last one is from 3 PM to 4 PM. Which one do you want to select?'
         }
         else{
-            speech = 'Sorry! This slot is not available.'
+            speech = 'Sorry! This slots are available only for today or tommorrow.'
         }
         responseToAPI(speech);
       }      
@@ -253,6 +253,7 @@ app.post('/callWebhook', function(req, res) {
         console.log('Slot Start Time : ', slotStartTime);
         console.log('Time of Day : ', timeOfDay);
         if(slotStartTime === 9){
+            console.log('Inside 9')
             if(timeOfDay === 'AM' || timeOfDay === 'am'){
                 speech = 'Okay! A pickup slot from 9 AM to 10 AM has been booked for you.'
             }
@@ -261,6 +262,7 @@ app.post('/callWebhook', function(req, res) {
             }
         }
         else if(slotStartTime === 12){
+            console.log('Inside 12')
             if(timeOfDay === 'PM' || timeOfDay === 'pm'){
                 speech = 'Okay! A pickup slot from 12 PM to 1 PM has been booked for you.'
             }
@@ -269,6 +271,7 @@ app.post('/callWebhook', function(req, res) {
             }            
         }
         else if(slotStartTime === 3){
+            console.log('Inside 3')
             if(timeOfDay === 'PM' || timeOfDay === 'pm'){
                 speech = 'Okay! A pickup slot from 3 PM to 4 PM has been booked for you.'
             }
