@@ -465,7 +465,7 @@ app.post('/callWebhook', function(req, res) {
         if(address === 'home' || address === 'Home'){
             if(dateOfDelivery === 'tomorrow' || dateOfDelivery === 'Tomorrow'){
                 speech = 'There is a pickup scheduled for tomorrow for you, do you want to club both both pickup and delivery together?'
-                contextOut = [{"name":"clubDelivery", "lifespan":5, "parameters":{'clubPickupCall': true}]
+                contextOut = [{"name":"clubDelivery", "lifespan":5, "parameters":{'clubPickupCall': true}}]
             }
             else{
                 speech = 'Your order has been placed and will be delivered to you by today evening.'
