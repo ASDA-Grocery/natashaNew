@@ -250,8 +250,8 @@ app.post('/callWebhook', function(req, res) {
         responseToAPI(speech);
       }
       else{
-        console.log('Slot Start Time : ', slotStartTime);
-        console.log('Time of Day : ', timeOfDay);
+        console.log('Slot Start Time : ', slotStartTime, ' type: ', typeof slotStartTime);
+        console.log('Time of Day : ', timeOfDay, ' type: ', typeof timeOfDay);
         if(slotStartTime === 9){
             console.log('Inside 9')
             if(timeOfDay === 'AM' || timeOfDay === 'am'){
