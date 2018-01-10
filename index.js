@@ -485,7 +485,7 @@ app.post('/callWebhook', function(req, res) {
         })   
       }
       else{
-        speech = 'You have ' + openCounter + ' package in transit and '+ofd+' package is out for delivery.'
+        speech = 'You have ' + openCounter + ' package in transit and '+ofd+' package is ready for delivery.'
         var tempCount = 1;
         packageData.packageDb.forEach(function(element){
           if(element.status === 'transit' || element.status === 'outForDelivery'){
@@ -499,26 +499,18 @@ app.post('/callWebhook', function(req, res) {
       responseToAPI(speech);
     }
    else if(intent === 'packageNo-status'){
-      var packageNo = req.body.result.parameters.packageN ? req.body.result.parameters.packageN : 'noOrderNumber'
+      var packageNo = req.body.result.parameters.packageN ? parseInt(req.body.result.parameters.packageN) : 'noOrderNumber'
       console.log('Package Number: ', packageNo);
       if(packageNo === 'noOrderNumber'){
         speech = 'Sorry! Not able to help you this time. Do you want me to help you with anything else?'
       }
       else{
         var packageCounter = 0;
-        for(var i = 0; i < packageData.packageDb.length; i++){
-          if(packageData.packageDb[i].status === 'transit'){
-            packageCounter++;
-            if(packageCounter == packageNo){
-              var deliveryTimeRem = (packageData.packageDb[i].deliveryTime - new Date())/60000;
-                 speech = 'Your package is in transit to '+packageData.packageDb[i].destination+' and will reach your nearest distribution center in the next '
-                         + Math.ceil(deliveryTimeRem) + ' minutes. Would you like me to help you with anything else?'
-              if(packageData.packageDb[i].shipped === 'outForDelivery'){
-                speech = 'It is yet to be shipped but will reach you on time. Anything else I can help you with?'
-              }
-              break;
-            }
-          }
+        if(packageData.packageDb[packageNo-1].status === 'transit'){
+            speech = 'Your package is in transit to '+packageData.packageDb[packageNo-1].destination+' and will reach you on time. Would you like me to help you with anything else?'
+        }
+        else{
+            speech = 'Your package is has arrived in '+packageData.packageDb[packageNo-1].destination+' and will be delivered to you by tomorrow. Would you like me to help you with anything else?'
         }
       }
       responseToAPI(speech);
