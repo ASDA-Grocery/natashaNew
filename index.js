@@ -500,6 +500,7 @@ app.post('/callWebhook', function(req, res) {
     }
    else if(intent === 'packageNo-status'){
       var packageNo = req.body.result.parameters.packageN ? req.body.result.parameters.packageN : 'noOrderNumber'
+      console.log('Package Number: ', packageNo);
       if(packageNo === 'noOrderNumber'){
         speech = 'Sorry! Not able to help you this time. Do you want me to help you with anything else?'
       }
