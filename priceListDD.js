@@ -34,19 +34,19 @@ module.exports = [
   }, {
     distance: 1000,
     days: 10,
-    price: 35
+    price: 65
   }, {
     distance: 1000,
     days: 30,
-    price: 45
-  }, {
-    distance: 1000,
-    days: 90,
     price: 55
   }, {
     distance: 1000,
+    days: 90,
+    price: 45
+  }, {
+    distance: 1000,
     days: 1000,
-    price: 65
+    price: 35
   }, {
     distance: 2000,
     days: 10,
