@@ -517,7 +517,7 @@ app.post('/callWebhook', function(req, res) {
       else if(openCounter == 0 && ofd == 1){
         packageData.packageDb.forEach(function(element){
           if(element.status === 'outForDelivery'){
-            speech = 'Your package to '+element.destination+' which sent on '+element.packageSentDate
+            speech = 'Your package to '+element.destination+' which was sent on '+element.packageSentDate
                 +' is out for delivery and will be delivered by end of the day. Would you like me to help you with anything else?'
           }
         })   
