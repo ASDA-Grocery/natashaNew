@@ -527,8 +527,7 @@ app.post('/callWebhook', function(req, res) {
         var tempCount = 1;
         packageData.packageDb.forEach(function(element){
           if(element.status === 'transit' || element.status === 'outForDelivery'){
-            speech = speech + ' Package ' + tempCount + ' is for ' + element.value
-                     + ' and it was sent to '+element.destination+'.'
+            speech = speech + ' Package ' + tempCount + ' was sent to '+element.destination+'.'
             tempCount++;
           }
         })
