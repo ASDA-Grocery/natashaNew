@@ -473,7 +473,7 @@ app.post('/callWebhook', function(req, res) {
       else{
         if(address === 'home' || address === 'Home'){
             if(dateOfDelivery === 'tomorrow' || dateOfDelivery === 'Tomorrow'){
-                speech = 'There is a pickup scheduled for tomorrow for you, do you want to club both both pickup and delivery together? The first pickup slot is from 9 AM to 10 AM, the second slot is from 12 PM to 1 PM and the last slot is from 3 PM to 4 PM.'
+                speech = 'There is a pickup scheduled for tomorrow for your package, do you want this to be delivered at the same time?'
                 contextOut = [{"name":"clubDelivery", "lifespan":5, "parameters":{'clubPickupCall': true}}]
             }
             else{
@@ -523,12 +523,12 @@ app.post('/callWebhook', function(req, res) {
         })   
       }
       else{
-        speech = 'You have ' + openCounter + ' package in transit and '+ofd+' package is ready for delivery.'
+        speech = 'You have ' + openCounter + ' package in transit and '+ofd+' package is at the destination hub.'
         var tempCount = 1;
         packageData.packageDb.forEach(function(element){
           if(element.status === 'transit' || element.status === 'outForDelivery'){
             speech = speech + ' Package ' + tempCount + ' is for ' + element.value
-                     + ' and it was sent on ' + element.packageSentDate + ' to '+element.destination+'.'
+                     + ' and it was sent to '+element.destination+'.'
             tempCount++;
           }
         })
@@ -545,10 +545,10 @@ app.post('/callWebhook', function(req, res) {
       else{
         var packageCounter = 0;
         if(packageData.packageDb[packageNo-1].status === 'transit'){
-            speech = 'Your package is in transit to '+packageData.packageDb[packageNo-1].destination+' and will reach you on time. Would you like me to help you with anything else?'
+            speech = 'Your package is in transit to '+packageData.packageDb[packageNo-1].destination+' and will be delivered on time. Would you like me to help you with anything else?'
         }
         else{
-            speech = 'Your package is has arrived in '+packageData.packageDb[packageNo-1].destination+' and will be delivered to you by tomorrow. Would you like me to help you with anything else?'
+            speech = 'Your package has arrived at the destination hub in '+packageData.packageDb[packageNo-1].destination+' and will be delivered tomorrow. Would you like me to help you with anything else?'
         }
       }
       responseToAPI(speech);
