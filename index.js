@@ -228,7 +228,7 @@ app.post('/callWebhook', function(req, res) {
       }
       else{
         if(dateOfPickup === 'today'){
-            speech = 'We have three pickup slots. The first one is from 9 AM to 10 AM, the second one is from 12 PM to 1 PM and the last one is from 3 PM to 4 PM. Which one do you want to select?'
+            speech = 'We have two pickup slots. The first one is from 3 PM to 4 PM and the last one is from 5 PM to 6 PM. Which one do you want to select?'
         }
         else if(dateOfPickup === 'tomorrow'){
             speech = 'We have three pickup slots. The first one is from 9 AM to 10 AM, the second one is from 12 PM to 1 PM and the last one is from 3 PM to 4 PM. Which one do you want to select?'
@@ -274,6 +274,15 @@ app.post('/callWebhook', function(req, res) {
             console.log('Inside 3')
             if(timeOfDay === 'PM' || timeOfDay === 'pm'){
                 speech = 'Okay! A pickup slot from 3 PM to 4 PM has been booked for you.'
+            }
+            else{
+                speech = 'Sorry! This slot is not available.'
+            }
+        }
+        else if(slotStartTime === '5' || slotStartTime === 5){
+            console.log('Inside 5')
+            if(timeOfDay === 'PM' || timeOfDay === 'pm'){
+                speech = 'Okay! A pickup slot from 5 PM to 6 PM has been booked for you.'
             }
             else{
                 speech = 'Sorry! This slot is not available.'
