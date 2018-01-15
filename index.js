@@ -254,7 +254,7 @@ app.post('/callWebhook', function(req, res) {
         console.log('Time of Day : ', timeOfDay, ' type: ', typeof timeOfDay);
         if(slotStartTime === '9' || slotStartTime === 9){
             console.log('Inside 9')
-            if(timeOfDay === 'AM' || timeOfDay === 'am'){
+            if(timeOfDay === 'AM' || timeOfDay === 'am' || timeOfDay === 'aM' || timeOfDay === 'Am'){
                 speech = 'Okay! A pickup slot from 9 AM to 10 AM has been booked for you.'
             }
             else{
@@ -263,7 +263,7 @@ app.post('/callWebhook', function(req, res) {
         }
         else if(slotStartTime === '12' || slotStartTime === 12){
             console.log('Inside 12')
-            if(timeOfDay === 'PM' || timeOfDay === 'pm'){
+            if(timeOfDay === 'PM' || timeOfDay === 'pm' || timeOfDay === 'pM' || timeOfDay === 'Pm'){
                 speech = 'Okay! A pickup slot from 12 PM to 1 PM has been booked for you.'
             }
             else{
@@ -272,7 +272,7 @@ app.post('/callWebhook', function(req, res) {
         }
         else if(slotStartTime === '3' || slotStartTime === 3){
             console.log('Inside 3')
-            if(timeOfDay === 'PM' || timeOfDay === 'pm'){
+            if(timeOfDay === 'PM' || timeOfDay === 'pm' || timeOfDay === 'pM' || timeOfDay === 'Pm'){
                 speech = 'Okay! A pickup slot from 3 PM to 4 PM has been booked for you.'
             }
             else{
@@ -281,7 +281,7 @@ app.post('/callWebhook', function(req, res) {
         }
         else if(slotStartTime === '5' || slotStartTime === 5){
             console.log('Inside 5')
-            if(timeOfDay === 'PM' || timeOfDay === 'pm'){
+            if(timeOfDay === 'PM' || timeOfDay === 'pm' || timeOfDay === 'pM' || timeOfDay === 'Pm'){
                 speech = 'Okay! A pickup slot from 5 PM to 6 PM has been booked for you.'
             }
             else{
