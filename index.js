@@ -251,7 +251,7 @@ app.post('/callWebhook', function(req, res) {
       }
       else{
         console.log('Slot Start Time : ', slotStartTime, ' type: ', typeof slotStartTime);
-        console.log('Time of Day : ', timeOfDay, ' type: ', typeof timeOfDay, ' length: ', timeOfDay.length());
+        console.log('Time of Day : ', timeOfDay, ' type: ', typeof timeOfDay, ' length: ', timeOfDay.length);
         if(slotStartTime === '9' || slotStartTime === 9){
             console.log('Inside 9')
             if(timeOfDay === 'AM' || timeOfDay === 'am' || timeOfDay === 'aM' || timeOfDay === 'Am' || timeOfDay === 'A.M.' || timeOfDay === 'a.m.' || timeOfDay === 'A.m.' || timeOfDay === 'a.M.' || timeOfDay === 'A.M' || timeOfDay === 'a.m' || timeOfDay === 'A.m' || timeOfDay === 'a.M'){
