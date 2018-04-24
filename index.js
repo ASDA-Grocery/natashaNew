@@ -3,7 +3,8 @@
 const express = require('express')
     , bodyParser = require('body-parser')
     , app = express()
-    , request = require("request");
+    , request = require("request")
+    , superagent = require("superagent");
 
 var priceListDD = require("./priceListDD.js")
   , priceListWS = require("./priceListWS.js")
