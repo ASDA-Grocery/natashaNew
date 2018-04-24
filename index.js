@@ -150,10 +150,7 @@ app.post('/callWebhook', function(req, res) {
                 deliveryCost: priceForDaysAndDistance
               }
               superagent
-                .get('http://54.183.205.111:3006/createShipment')
-                .query({    
-                  data: JSON.stringify(shipmentDetails)
-                })
+                .get('http://54.183.205.111:3006/createShipment?data='+JSON.stringify(shipmentDetails))
                 .end((error, response)=>{
                     console.log('Response received')
                     console.log('Response from Server: ',response.text)                   
