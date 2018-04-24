@@ -147,9 +147,9 @@ app.post('/callWebhook', function(req, res) {
                 deliveryTime: numberOfDays + ' ' + timePeriod,
                 parcelSize: size,
                 parcelWeight: weight,
+                surcharge: '$11',
                 deliveryCost: priceForDaysAndDistance
               }
-//               var queryString = 'http://54.183.205.111:3006/createShipment?data='+'Hello'
               var queryString = 'http://54.183.205.111:3006/createShipment?data='+JSON.stringify(shipmentDetails)+''
               superagent
                 .get(queryString)
@@ -309,6 +309,14 @@ app.post('/callWebhook', function(req, res) {
         else{
             speech = 'Sorry! This slot is not available.'
         }
+        var pickupSlot = slotStartTime + ' ' + timeOfDay.toUpperCase() + ' - ' + (slotStartTime+1) + ' ' + timeOfDay.toUpperCase()
+        var queryString = 'http://54.183.205.111:3006/bookPickupSlot?data='+JSON.stringify(pickupSlot)+''
+        superagent
+          .get(queryString)
+          .end((error, response)=>{
+              console.log('Response received')
+              console.log('Response from Server: ',response.text)                   
+        })
         responseToAPI(speech);
       }      
     }
@@ -318,6 +326,7 @@ app.post('/callWebhook', function(req, res) {
       var mineralContent = req.body.result.parameters.mineralContent ? req.body.result.parameters.mineralContent : 'noMineralContent'
       var mineralType = req.body.result.parameters.mineralType ? req.body.result.parameters.mineralType : 'noMineralType'
       var productType = req.body.result.parameters.productType ? req.body.result.parameters.productType : 'noProductType'
+      
       if(mineralType === 'noMineralType' || productType === 'noProductType' || mineralContent === 'noMineralContent'){
         speech = 'Please specify a proper product with proper details.'
       }
