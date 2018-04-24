@@ -152,7 +152,8 @@ app.post('/callWebhook', function(req, res) {
                     deliveryCost: priceForDaysAndDistance
                 })
                 .end((error, response)=>{
-                    console.log('Response from Server: ',response.text)                   
+                    console.log('Response received')
+                    console.log('Response from Server: ',response)                   
                 })
               responseToAPI(speech);
               return distance;
