@@ -153,7 +153,7 @@ app.post('/callWebhook', function(req, res) {
 //                 })
                 .end((error, response)=>{
                     console.log('Response received')
-//                     console.log('Response from Server: ',response)                   
+                    console.log('Response from Server: ',response.text)                   
                 })
               responseToAPI(speech);
               return distance;
