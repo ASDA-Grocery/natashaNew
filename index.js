@@ -149,8 +149,10 @@ app.post('/callWebhook', function(req, res) {
                 parcelWeight: weight,
                 deliveryCost: priceForDaysAndDistance
               }
+              var queryString = 'http://54.183.205.111:3006/createShipment?data='+'Hello'
+//               var queryString = 'http://54.183.205.111:3006/createShipment?data='+JSON.stringify(shipmentDetails
               superagent
-                .get('http://54.183.205.111:3006/createShipment?data='+JSON.stringify(shipmentDetails))
+                .get(queryString)
                 .end((error, response)=>{
                     console.log('Response received')
                     console.log('Response from Server: ',response.text)                   
