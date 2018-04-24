@@ -142,18 +142,18 @@ app.post('/callWebhook', function(req, res) {
                 speech = 'Thanks for confirming all the details. The cost of delivery will be ' + priceForDaysAndDistance + ' Pounds.'
               }
               superagent
-                .get('http://54.183.205.111:3006/createShipment')
-                .query({
-                    originCity: origin,
-                    destinationCity: destination,
-                    deliveryTime: numberOfDays + ' ' + timePeriod,
-                    parcelSize: size,
-                    parcelWeight: weight,
-                    deliveryCost: priceForDaysAndDistance
-                })
+                .get('http://54.183.205.111:3006/createShipment?originCity=Texas')
+//                 .query({
+//                     originCity: origin,
+//                     destinationCity: destination,
+//                     deliveryTime: numberOfDays + ' ' + timePeriod,
+//                     parcelSize: size,
+//                     parcelWeight: weight,
+//                     deliveryCost: priceForDaysAndDistance
+//                 })
                 .end((error, response)=>{
                     console.log('Response received')
-                    console.log('Response from Server: ',response)                   
+//                     console.log('Response from Server: ',response)                   
                 })
               responseToAPI(speech);
               return distance;
