@@ -141,6 +141,19 @@ app.post('/callWebhook', function(req, res) {
               else{
                 speech = 'Thanks for confirming all the details. The cost of delivery will be ' + priceForDaysAndDistance + ' Pounds.'
               }
+              supeagent
+                .get('http://54.183.205.111:3006/createShipment')
+                .query({
+                    originCity: origin,
+                    destinationCity: destination,
+                    deliveryTime: numberOfDays + ' ' + timePeriod,
+                    parcelSize: size,
+                    parcelWeight: weight,
+                    deliveryCost: priceForDaysAndDistance
+                })
+                .then(function(res){
+                  console.log('Response from Server: ', res.text)
+              });
               responseToAPI(speech);
               return distance;
             }
