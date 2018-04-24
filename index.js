@@ -141,16 +141,19 @@ app.post('/callWebhook', function(req, res) {
               else{
                 speech = 'Thanks for confirming all the details. The cost of delivery will be ' + priceForDaysAndDistance + ' Pounds.'
               }
+              var shipmentDetails = {
+                originCity: origin,
+                destinationCity: destination,
+                deliveryTime: numberOfDays + ' ' + timePeriod,
+                parcelSize: size,
+                parcelWeight: weight,
+                deliveryCost: priceForDaysAndDistance
+              }
               superagent
-                .get('http://54.183.205.111:3006/createShipment?originCity=Texas')
-//                 .query({
-//                     originCity: origin,
-//                     destinationCity: destination,
-//                     deliveryTime: numberOfDays + ' ' + timePeriod,
-//                     parcelSize: size,
-//                     parcelWeight: weight,
-//                     deliveryCost: priceForDaysAndDistance
-//                 })
+                .get('http://54.183.205.111:3006/createShipment')
+                .query({    
+                  data: JSON.stringify(shipmentDetails)
+                })
                 .end((error, response)=>{
                     console.log('Response received')
                     console.log('Response from Server: ',response.text)                   
