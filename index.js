@@ -147,7 +147,7 @@ app.post('/callWebhook', function(req, res) {
                 deliveryTime: numberOfDays + ' ' + timePeriod,
                 parcelSize: size,
                 parcelWeight: weight,
-                surcharge: '$11',
+                surcharge: '11',
                 deliveryCost: priceForDaysAndDistance
               }
               var queryString = 'http://54.183.205.111:3006/createShipment?data='+JSON.stringify(shipmentDetails)+''
