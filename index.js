@@ -309,7 +309,8 @@ app.post('/callWebhook', function(req, res) {
         else{
             speech = 'Sorry! This slot is not available.'
         }
-        var pickupSlot = slotStartTime + ' ' + timeOfDay.toUpperCase() + ' - ' + (slotStartTime+1) + ' ' + timeOfDay.toUpperCase()
+        var slotEndTime = slotStartTime+1;
+        var pickupSlot = slotStartTime + ' ' + timeOfDay.toUpperCase() + ' - ' + slotEndTime + ' ' + timeOfDay.toUpperCase()
         var queryString = 'http://54.183.205.111:3006/bookPickupSlot?data='+JSON.stringify(pickupSlot)+''
         superagent
           .get(queryString)
