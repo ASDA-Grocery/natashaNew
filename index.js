@@ -129,8 +129,10 @@ app.post('/callWebhook', function(req, res) {
               let priceForWeightAndSize = getPriceBasedOnWeightAndSize(weight, size);
               console.log("Cost based on Weight and Size: " + priceForWeightAndSize);
               console.log("Cost based on Distance and Days: " + priceForDaysAndDistance);
+              var totalCostPrice = 0;
               if(priceForWeightAndSize > priceForDaysAndDistance){
                 speech = 'Thanks for confirming all the details. The cost of delivery will be ' + priceForWeightAndSize + ' $. '
+                totalCostPrice = priceForWeightAndSize;
                 if(parcelWeight.amount > 70){
                     speech = speech + 'Also there might be some extra surcharges associated with this delivery.'
                 }
@@ -140,6 +142,7 @@ app.post('/callWebhook', function(req, res) {
               }
               else{
                 speech = 'Thanks for confirming all the details. The cost of delivery will be ' + priceForDaysAndDistance + ' Pounds.'
+                totalCostPrice = priceForDaysAndDistance;
               }
               var shipmentDetails = {
                 originCity: origin,
@@ -148,7 +151,7 @@ app.post('/callWebhook', function(req, res) {
                 parcelSize: size,
                 parcelWeight: weight,
                 surcharge: '11',
-                deliveryCost: priceForDaysAndDistance
+                deliveryCost: totalCostPrice
               }
               var queryString = 'http://54.183.205.111:3006/createShipment?data='+JSON.stringify(shipmentDetails)+''
               superagent
