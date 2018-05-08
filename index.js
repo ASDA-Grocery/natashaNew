@@ -330,7 +330,7 @@ app.post('/callWebhook', function(req, res) {
       var mineralContent = req.body.result.parameters.mineralContent ? req.body.result.parameters.mineralContent : 'noMineralContent'
       var mineralType = req.body.result.parameters.mineralType ? req.body.result.parameters.mineralType : 'noMineralType'
       var productType = req.body.result.parameters.productType ? req.body.result.parameters.productType : 'noProductType'
-      
+      var myProductData =[];
       if(mineralType === 'noMineralType' || productType === 'noProductType' || mineralContent === 'noMineralContent'){
         speech = 'Please specify a proper product with proper details.'
       }
@@ -356,16 +356,43 @@ app.post('/callWebhook', function(req, res) {
           speech = 'We have '+ countObj[keyArray[keyArray.length - 1]] + ' options with '
                     + keyArray[keyArray.length - 1] + ' grams and ' + countObj[keyArray[keyArray.length - 2]]
                     + ' options with ' + keyArray[keyArray.length - 2]+ ' grams in each bar.'
+          let tempProduct = {
+            gramValue: keyArray[keyArray.length - 1],
+            quantity: countObj[keyArray[keyArray.length - 1]]
+          }
+          myProductData.push(tempProduct)
+          tempProduct = {
+            gramValue: keyArray[keyArray.length - 2],
+            quantity: countObj[keyArray[keyArray.length - 2]]
+          }
+          myProductData.push(tempProduct)
         }
         else if(mineralContent === 'low'){
           speech = 'We have '+ countObj[keyArray[0]] + ' options with '
                     + keyArray[0] + ' grams and ' + countObj[keyArray[1]]
                     + ' options with ' + keyArray[1] + ' grams in each bar.'
+          let tempProduct = {
+            gramValue: keyArray[0],
+            quantity: countObj[keyArray[0]]
+          }
+          myProductData.push(tempProduct)
+          tempProduct = {
+            gramValue: keyArray[1],
+            quantity: countObj[keyArray[1]]
+          }
+          myProductData.push(tempProduct)
         }
         else{
           speech = 'Sorry this level of content is not available.'
         }
       }
+      var queryString = 'http://54.183.205.111:3006/findProducts?data='+JSON.stringify(myProductData)+''
+      superagent
+        .get(queryString)
+        .end((error, response)=>{
+            console.log('Response received')
+            console.log('Response from Server: ',response.text)                   
+      })
       responseToAPI(speech);
     }
     
@@ -422,12 +449,20 @@ app.post('/callWebhook', function(req, res) {
         speech = productName;
         contextOut = [{"name":"addproductcart", "lifespan":5, "parameters":{'productName': productName}}]
       }
+      var queryString = 'http://54.183.205.111:3006/findSpecificProducts?data='+JSON.stringify(productName)+''
+      superagent
+        .get(queryString)
+        .end((error, response)=>{
+            console.log('Response received')
+            console.log('Response from Server: ',response.text)                   
+      })
       responseToAPI(speech);
     }
     
     else if(intent === 'optionsFindProduct'){
       var index = req.body.result.contexts.findIndex((x) => x.name === 'searchproduct')
       console.log('index ------> ',index);
+      var productList = [];
       var mineralValue = req.body.result.parameters.number ? req.body.result.parameters.number : 'noMineralValue'
       var mineralType = req.body.result.contexts[index].parameters.mineralType ? req.body.result.contexts[index].parameters.mineralType : 'noMineralType'
       if(mineralType === 'noMineralType'){
@@ -439,6 +474,7 @@ app.post('/callWebhook', function(req, res) {
           productData.productList.forEach(function(element){
             if(element[mineralType] == mineralValue){
               speech = speech + element.productName + ', '
+              productList.push(element.productName)
             }
           })
           speech = speech.slice(0,-2)
@@ -450,6 +486,13 @@ app.post('/callWebhook', function(req, res) {
           }
         }
       }
+      var queryString = 'http://54.183.205.111:3006/optionsFindProducts?data='+JSON.stringify(productList)+''
+      superagent
+        .get(queryString)
+        .end((error, response)=>{
+            console.log('Response received')
+            console.log('Response from Server: ',response.text)                   
+      })
       responseToAPI(speech);
     }
     
@@ -458,7 +501,7 @@ app.post('/callWebhook', function(req, res) {
       var number = req.body.result.parameters.number ? req.body.result.parameters.number : 'noNumberIntegerValue'
       var productName = req.body.result.contexts[index].parameters.productName ? req.body.result.contexts[index].parameters.productName : 'noProductName'
       var checkoutBool = req.body.result.contexts[index].parameters.checkout ? req.body.result.contexts[index].parameters.checkout : 'noCheckout'
-
+      var cartData;
       if(checkoutBool === 'noCheckout' || checkoutBool === ''){
         var prodIndex = productData.productList.findIndex((x) => x.productName === productName)
         var product = {
@@ -469,6 +512,8 @@ app.post('/callWebhook', function(req, res) {
         shoppingData.shoppingList.cart.productList.push(product)
         console.log(shoppingData.shoppingList.cart.productList);
         speech = number + ' ' + productName + ' added to the cart. Do you want to proceed to checkout?'
+        cartData.productName = productName;
+        cartData.quaantity: number
       }
       else{
         var prodIndex = productData.productList.findIndex((x) => x.productName === productName)
@@ -479,7 +524,16 @@ app.post('/callWebhook', function(req, res) {
         }
         shoppingData.shoppingList.cart.productList.push(product)
         speech = number + ' ' + productName + ' added to the cart. Would you like to pick them up from your nearest store or should I place a delivery request?.'
+        cartData.productName = productName;
+        cartData.quaantity: number
       }
+      var queryString = 'http://54.183.205.111:3006/addToCart?data='+JSON.stringify(cartData)+''
+      superagent
+        .get(queryString)
+        .end((error, response)=>{
+            console.log('Response received')
+            console.log('Response from Server: ',response.text)                   
+      })
       responseToAPI(speech)
     }
 
@@ -498,6 +552,7 @@ app.post('/callWebhook', function(req, res) {
     else if(intent === 'confirmDeliveryAddress'){
       var dateOfDelivery = req.body.result.parameters.dateOfDelivery ? req.body.result.parameters.dateOfDelivery : 'noDateOfDelivery'
       var address = req.body.result.parameters.address ? req.body.result.parameters.address : 'noAddress'
+      var deliveryDetails;
       if(address === 'noAddress' || dateOfDelivery === 'noDateOfDelivery'){
         speech = 'Please specify delivery address and delivery date properly?.'
       }
@@ -510,6 +565,8 @@ app.post('/callWebhook', function(req, res) {
             else{
                 speech = 'Your order has been placed and will be delivered to you by today evening.'
             }
+            deliveryDetails.address = address;
+            deliveryDetails.dateOfDelivery = dateOfDelivery;
         }
         else{
             if(dateOfDelivery === 'tomorrow' || dateOfDelivery === 'Tomorrow'){
@@ -518,8 +575,17 @@ app.post('/callWebhook', function(req, res) {
             else{
                 speech = 'Your order has been placed and you can pick it up from your nearest store by evening today.'
             }
+            deliveryDetails.address = 'store';
+            deliveryDetails.dateOfDelivery = dateOfDelivery;
         }
       }
+      var queryString = 'http://54.183.205.111:3006/confirmDeliveryAddress?data='+JSON.stringify(deliveryDetails)+''
+      superagent
+        .get(queryString)
+        .end((error, response)=>{
+            console.log('Response received')
+            console.log('Response from Server: ',response.text)                   
+      })
       responseToAPI(speech);
     }
     
