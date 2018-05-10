@@ -507,7 +507,7 @@ app.post('/callWebhook', function(req, res) {
         var product = {
           productId: productData.productList[prodIndex].productId,
           productName: productName,
-          quantity = number
+          quantity: number
         }
         shoppingData.shoppingList.cart.productList.push(product)
         console.log(shoppingData.shoppingList.cart.productList);
@@ -520,7 +520,7 @@ app.post('/callWebhook', function(req, res) {
         var product = {
           productId: productData.productList[prodIndex].productId,
           productName: productName,
-          quantity = number
+          quantity: number
         }
         shoppingData.shoppingList.cart.productList.push(product)
         speech = number + ' ' + productName + ' added to the cart. Would you like to pick them up from your nearest store or should I place a delivery request?.'
