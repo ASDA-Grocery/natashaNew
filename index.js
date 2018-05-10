@@ -463,6 +463,7 @@ app.post('/callWebhook', function(req, res) {
       var index = req.body.result.contexts.findIndex((x) => x.name === 'searchproduct')
       console.log('index ------> ',index);
       var productList = [];
+      var myProductData = {};
       var mineralValue = req.body.result.parameters.number ? req.body.result.parameters.number : 'noMineralValue'
       var mineralType = req.body.result.contexts[index].parameters.mineralType ? req.body.result.contexts[index].parameters.mineralType : 'noMineralType'
       if(mineralType === 'noMineralType'){
@@ -486,7 +487,9 @@ app.post('/callWebhook', function(req, res) {
           }
         }
       }
-      var queryString = 'http://54.183.205.111:3006/optionsFindProducts?data='+JSON.stringify(productList)+''
+      myProductData.productList = productList;
+      myProductData.mineralValue = mineralValue;
+      var queryString = 'http://54.183.205.111:3006/optionsFindProducts?data='+JSON.stringify(myProductData)+''
       superagent
         .get(queryString)
         .end((error, response)=>{
