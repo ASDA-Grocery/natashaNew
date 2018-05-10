@@ -552,7 +552,7 @@ app.post('/callWebhook', function(req, res) {
     else if(intent === 'confirmDeliveryAddress'){
       var dateOfDelivery = req.body.result.parameters.dateOfDelivery ? req.body.result.parameters.dateOfDelivery : 'noDateOfDelivery'
       var address = req.body.result.parameters.address ? req.body.result.parameters.address : 'noAddress'
-      var deliveryDetails;
+      var deliveryDetails = {};
       if(address === 'noAddress' || dateOfDelivery === 'noDateOfDelivery'){
         speech = 'Please specify delivery address and delivery date properly?.'
       }
