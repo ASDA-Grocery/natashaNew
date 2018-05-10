@@ -501,7 +501,7 @@ app.post('/callWebhook', function(req, res) {
       var number = req.body.result.parameters.number ? req.body.result.parameters.number : 'noNumberIntegerValue'
       var productName = req.body.result.contexts[index].parameters.productName ? req.body.result.contexts[index].parameters.productName : 'noProductName'
       var checkoutBool = req.body.result.contexts[index].parameters.checkout ? req.body.result.contexts[index].parameters.checkout : 'noCheckout'
-      var cartData;
+      var cartData = {};
       if(checkoutBool === 'noCheckout' || checkoutBool === ''){
         var prodIndex = productData.productList.findIndex((x) => x.productName === productName)
         var product = {
