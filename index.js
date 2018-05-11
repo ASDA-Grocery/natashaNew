@@ -606,7 +606,7 @@ app.post('/callWebhook', function(req, res) {
 //         console.log('Contexts: ------------>> ', contexts)
       var index = req.body.result.contexts.findIndex((x) => x.name === 'searchproduct')
       var scheduledPickupTime = req.body.result.contexts[index].parameters.scheduledPickupTime;    
-      var queryString = 'http://54.183.205.111:3006/confirmDeliveryimeT?data='+JSON.stringify({'scheduledPickupTime': scheduledPickupTime})+''
+      var queryString = 'http://54.183.205.111:3006/confirmDeliveryTime?data='+JSON.stringify({'scheduledPickupTime': scheduledPickupTime})+''
       superagent
         .get(queryString)
         .end((error, response)=>{
