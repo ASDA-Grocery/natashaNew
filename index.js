@@ -602,19 +602,17 @@ app.post('/callWebhook', function(req, res) {
     
     
     else if(intent === 'acceptClubPickup&Delivery'){
-        var contexts = req.body.result.contexts;
-        console.log('Contexts: ------------>> ', contexts)
-//       var dateOfDelivery = req.body.result.parameters.dateOfDelivery ? req.body.result.parameters.dateOfDelivery : 'noDateOfDelivery'
-//       var address = req.body.result.parameters.address ? req.body.result.parameters.address : 'noAddress'
-//       var deliveryDetails = {};
-    
-//       var queryString = 'http://54.183.205.111:3006/confirmDeliveryimeT?data='+JSON.stringify()+''
-//       superagent
-//         .get(queryString)
-//         .end((error, response)=>{
-//             console.log('Response received')
-//             console.log('Response from Server: ',response.text)                   
-//       })
+//         var contexts = req.body.result.contexts;
+//         console.log('Contexts: ------------>> ', contexts)
+      var index = req.body.result.contexts.findIndex((x) => x.name === 'searchproduct')
+      var scheduledPickupTime = req.body.result.contexts[index].parameters.scheduledPickupTime;    
+      var queryString = 'http://54.183.205.111:3006/confirmDeliveryimeT?data='+JSON.stringify({'scheduledPickupTime': scheduledPickupTime})+''
+      superagent
+        .get(queryString)
+        .end((error, response)=>{
+            console.log('Response received')
+            console.log('Response from Server: ',response.text)                   
+      })
       var speech = 'Alright it will be delivered when we pickup your package.'
       responseToAPI(speech);
     }
