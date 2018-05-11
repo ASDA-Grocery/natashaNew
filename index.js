@@ -601,7 +601,9 @@ app.post('/callWebhook', function(req, res) {
     
     
     
-//     else if(intent === 'acceptClubPickup&Delivery'){
+    else if(intent === 'acceptClubPickup&Delivery'){
+        var contexts = req.body.result.contexts;
+        console.log('Contexts: ------------>> ', contexts)
 //       var dateOfDelivery = req.body.result.parameters.dateOfDelivery ? req.body.result.parameters.dateOfDelivery : 'noDateOfDelivery'
 //       var address = req.body.result.parameters.address ? req.body.result.parameters.address : 'noAddress'
 //       var deliveryDetails = {};
@@ -613,8 +615,9 @@ app.post('/callWebhook', function(req, res) {
 //             console.log('Response received')
 //             console.log('Response from Server: ',response.text)                   
 //       })
-//       responseToAPI(speech);
-//     }
+      var speech = 'Alright it will be delivered when we pickup your package.'
+      responseToAPI(speech);
+    }
     
     
     
