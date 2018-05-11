@@ -570,7 +570,7 @@ app.post('/callWebhook', function(req, res) {
         if(address === 'home' || address === 'Home'){
             if(dateOfDelivery === 'tomorrow' || dateOfDelivery === 'Tomorrow'){
                 speech = 'There is a pickup scheduled for tomorrow for your package, do you want this to be delivered at the same time?'
-                contextOut = [{"name":"clubDelivery", "lifespan":5, "parameters":{'clubPickupCall': true}}]
+                contextOut = [{"name":"clubDelivery", "lifespan":5, "parameters":{'clubPickupCall': true, 'scheduledPickupTime': '3 PM - 4 PM'}}]
             }
             else{
                 speech = 'Your order has been placed and will be delivered to you by today evening.'
@@ -598,6 +598,27 @@ app.post('/callWebhook', function(req, res) {
       })
       responseToAPI(speech);
     }
+    
+    
+    
+//     else if(intent === 'acceptClubPickup&Delivery'){
+//       var dateOfDelivery = req.body.result.parameters.dateOfDelivery ? req.body.result.parameters.dateOfDelivery : 'noDateOfDelivery'
+//       var address = req.body.result.parameters.address ? req.body.result.parameters.address : 'noAddress'
+//       var deliveryDetails = {};
+    
+//       var queryString = 'http://54.183.205.111:3006/confirmDeliveryimeT?data='+JSON.stringify()+''
+//       superagent
+//         .get(queryString)
+//         .end((error, response)=>{
+//             console.log('Response received')
+//             console.log('Response from Server: ',response.text)                   
+//       })
+//       responseToAPI(speech);
+//     }
+    
+    
+    
+    
     
    
     else if(intent === 'checkPackageStatus'){
