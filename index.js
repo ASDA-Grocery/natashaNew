@@ -627,6 +627,7 @@ app.post('/callWebhook', function(req, res) {
    
     else if(intent === 'checkPackageStatus'){
       console.log('Package Database :', packageData.packageDb);
+      var shipmentData = []
       packageData.packageDb.forEach(function(element){
         if(element.status === 'transit'){
           openCounter ++;
@@ -661,19 +662,39 @@ app.post('/callWebhook', function(req, res) {
           if(element.status === 'transit' || element.status === 'outForDelivery'){
               if(tempCount == 1){
                 speech = speech + ' Package ' + tempCount + ' containing books was sent to '+element.destination+'.'
+                var tempOb = {
+                    'packageNo': tempCount,
+                    'content': 'Books',
+                    'destination': element.destination
+                }
+                shipmentData.push(tempOb)
               }
               else if(tempCount == 2){
                 speech = speech + ' Package ' + tempCount + ' containing clothes was sent to '+element.destination+'.'
+                var tempOb = {
+                    'packageNo': tempCount,
+                    'content': 'Clothes',
+                    'destination': element.destination
+                }
+                shipmentData.push(tempOb)
               }            
             tempCount++;
           }
         })
         speech = speech + ' Which one should I check?'
       }
+      var queryString = 'http://54.183.205.111:3006/checkPackageStatus?data='+JSON.stringify(shipmentData)+''
+      superagent
+        .get(queryString)
+        .end((error, response)=>{
+            console.log('Response received')
+            console.log('Response from Server: ',response.text)                   
+      })
       responseToAPI(speech);
     }
    else if(intent === 'packageNo-status'){
       var packageNo = req.body.result.parameters.packageN ? parseInt(req.body.result.parameters.packageN) : 'noOrderNumber'
+      var shipmentDetails = {}
       console.log('Package Number: ', packageNo);
       if(packageNo === 'noOrderNumber'){
         speech = 'Sorry! Not able to help you this time. Do you want me to help you with anything else?'
@@ -682,11 +703,30 @@ app.post('/callWebhook', function(req, res) {
         var packageCounter = 0;
         if(packageData.packageDb[packageNo-1].status === 'transit'){
             speech = 'Your package is in transit to '+packageData.packageDb[packageNo-1].destination+' and will be delivered on time. Would you like me to help you with anything else?'
+            shipmentDetails.destination = packageData.packageDb[packageNo-1].destination;
+            shipmentDetails.eta = 'On Time';
+            shipmentDetails.currentStatus: 'Transit';
         }
         else{
             speech = 'Your package has arrived at the destination hub in '+packageData.packageDb[packageNo-1].destination+' and will be delivered tomorrow. Would you like me to help you with anything else?'
+            shipmentDetails.destination = packageData.packageDb[packageNo-1].destination;
+            shipmentDetails.eta = 'Tomorrow';
+            shipmentDetails.currentStatus: 'Destination Hub';
+        }
+        if(packageNo === 1){
+            shipmentDetails.content = 'Books' 
+        }
+        else{
+            shipmentDetails.content = 'Clothes' 
         }
       }
+      var queryString = 'http://54.183.205.111:3006/trackByPackageNumber?data='+JSON.stringify(shipmentDetails)+''
+      superagent
+        .get(queryString)
+        .end((error, response)=>{
+            console.log('Response received')
+            console.log('Response from Server: ',response.text)                   
+      })
       responseToAPI(speech);
     }
     else if(intent === 'packageDest-status'){
