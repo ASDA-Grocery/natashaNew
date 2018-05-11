@@ -604,7 +604,7 @@ app.post('/callWebhook', function(req, res) {
     else if(intent === 'acceptClubPickup&Delivery'){
         var contexts = req.body.result.contexts;
         console.log('Contexts: ------------>> ', contexts)
-      var index = req.body.result.contexts.findIndex((x) => x.name === 'searchproduct')
+      var index = req.body.result.contexts.findIndex((x) => x.name === 'clubdelivery')
       console.log('index:', index)
       console.log('req.body.result.contexts[index]: ',req.body.result.contexts[index])
       var scheduledPickupTime = req.body.result.contexts[index].parameters.scheduledPickupTime;    
