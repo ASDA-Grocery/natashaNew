@@ -705,13 +705,13 @@ app.post('/callWebhook', function(req, res) {
             speech = 'Your package is in transit to '+packageData.packageDb[packageNo-1].destination+' and will be delivered on time. Would you like me to help you with anything else?'
             shipmentDetails.destination = packageData.packageDb[packageNo-1].destination;
             shipmentDetails.eta = 'On Time';
-            shipmentDetails.currentStatus: 'Transit';
+            shipmentDetails.currentStatus = 'Transit';
         }
         else{
             speech = 'Your package has arrived at the destination hub in '+packageData.packageDb[packageNo-1].destination+' and will be delivered tomorrow. Would you like me to help you with anything else?'
             shipmentDetails.destination = packageData.packageDb[packageNo-1].destination;
             shipmentDetails.eta = 'Tomorrow';
-            shipmentDetails.currentStatus: 'Destination Hub';
+            shipmentDetails.currentStatus = 'Destination Hub';
         }
         if(packageNo === 1){
             shipmentDetails.content = 'Books' 
