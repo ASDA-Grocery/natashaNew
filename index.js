@@ -549,6 +549,13 @@ app.post('/callWebhook', function(req, res) {
       else{
         speech = 'Alright. Is there anything else I can help now?'
       }
+      var queryString = 'http://54.183.205.111:3006/confirmCheckout?data='+JSON.stringify('confirmCheckout': true)+''
+      superagent
+        .get(queryString)
+        .end((error, response)=>{
+            console.log('Response received')
+            console.log('Response from Server: ',response.text)                   
+      })
       responseToAPI(speech);
     }
     
