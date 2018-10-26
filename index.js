@@ -12,6 +12,8 @@ var priceListDD = require("./priceListDD.js")
   , shoppingData = require('./shoppingList.js')
   , productData = require('./productList.js');
 
+const awsURL = '';
+
 //API KEY for Google Distance Matrix API
 const API_KEY = "AIzaSyC0KZOj0sO4UHi2fLyDhsGnfV7GZZxGdfM";
 
