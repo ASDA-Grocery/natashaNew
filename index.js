@@ -12,7 +12,7 @@ var priceListDD = require("./priceListDD.js")
   , shoppingData = require('./shoppingList.js')
   , productData = require('./productList.js');
 
-const awsURL = '13.233.252.237:3006';
+const awsURL = '13.235.27.67:3006';
 
 //API KEY for Google Distance Matrix API
 const API_KEY = "AIzaSyC0KZOj0sO4UHi2fLyDhsGnfV7GZZxGdfM";
@@ -155,7 +155,7 @@ app.post('/callWebhook', function(req, res) {
                 surcharge: '11',
                 deliveryCost: totalCostPrice
               }
-              var queryString = 'http://13.233.252.237:3006/createShipment?data='+JSON.stringify(shipmentDetails)+''
+              var queryString = 'http://13.235.27.67:3006/createShipment?data='+JSON.stringify(shipmentDetails)+''
               superagent
                 .get(queryString)
                 .end((error, response)=>{
@@ -316,7 +316,7 @@ app.post('/callWebhook', function(req, res) {
         }
         var slotEndTime = parseInt(slotStartTime)+1;
         var pickupSlot = slotStartTime + ' ' + timeOfDay.toUpperCase() + ' - ' + slotEndTime + ' ' + timeOfDay.toUpperCase()
-        var queryString = 'http://13.233.252.237:3006/bookPickupSlot?data='+JSON.stringify(pickupSlot)+''
+        var queryString = 'http://13.235.27.67:3006/bookPickupSlot?data='+JSON.stringify(pickupSlot)+''
         superagent
           .get(queryString)
           .end((error, response)=>{
@@ -388,7 +388,7 @@ app.post('/callWebhook', function(req, res) {
           speech = 'Sorry this level of content is not available.'
         }
       }
-      var queryString = 'http://13.233.252.237:3006/findProducts?data='+JSON.stringify(myProductData)+''
+      var queryString = 'http://13.235.27.67:3006/findProducts?data='+JSON.stringify(myProductData)+''
       superagent
         .get(queryString)
         .end((error, response)=>{
@@ -451,7 +451,7 @@ app.post('/callWebhook', function(req, res) {
         speech = productName;
         contextOut = [{"name":"addproductcart", "lifespan":5, "parameters":{'productName': productName}}]
       }
-      var queryString = 'http://13.233.252.237:3006/findSpecificProducts?data='+JSON.stringify(productName)+''
+      var queryString = 'http://13.235.27.67:3006/findSpecificProducts?data='+JSON.stringify(productName)+''
       superagent
         .get(queryString)
         .end((error, response)=>{
@@ -491,7 +491,7 @@ app.post('/callWebhook', function(req, res) {
       }
       myProductData.productList = productList;
       myProductData.mineralValue = mineralValue;
-      var queryString = 'http://13.233.252.237:3006/optionsFindProducts?data='+JSON.stringify(myProductData)+''
+      var queryString = 'http://13.235.27.67:3006/optionsFindProducts?data='+JSON.stringify(myProductData)+''
       superagent
         .get(queryString)
         .end((error, response)=>{
@@ -532,7 +532,7 @@ app.post('/callWebhook', function(req, res) {
         cartData.productName = productName;
         cartData.quantity = number
       }
-      var queryString = 'http://13.233.252.237:3006/addToCart?data='+JSON.stringify(cartData)+''
+      var queryString = 'http://13.235.27.67:3006/addToCart?data='+JSON.stringify(cartData)+''
       superagent
         .get(queryString)
         .end((error, response)=>{
@@ -551,7 +551,7 @@ app.post('/callWebhook', function(req, res) {
       else{
         speech = 'Alright. Is there anything else I can help now?'
       }
-      var queryString = 'http://13.233.252.237:3006/confirmCheckout?data='+JSON.stringify({'confirmCheckout': true})+''
+      var queryString = 'http://13.235.27.67:3006/confirmCheckout?data='+JSON.stringify({'confirmCheckout': true})+''
       superagent
         .get(queryString)
         .end((error, response)=>{
@@ -591,7 +591,7 @@ app.post('/callWebhook', function(req, res) {
             deliveryDetails.dateOfDelivery = dateOfDelivery;
         }
       }
-      var queryString = 'http://13.233.252.237:3006/confirmDeliveryAddress?data='+JSON.stringify(deliveryDetails)+''
+      var queryString = 'http://13.235.27.67:3006/confirmDeliveryAddress?data='+JSON.stringify(deliveryDetails)+''
       superagent
         .get(queryString)
         .end((error, response)=>{
@@ -611,7 +611,7 @@ app.post('/callWebhook', function(req, res) {
       console.log('req.body.result.contexts[index]: ',req.body.result.contexts[index])
       var scheduledPickupTime = req.body.result.contexts[index].parameters.scheduledPickupTime;    
       console.log('scheduledPickupTime: ', scheduledPickupTime)
-      var queryString = 'http://13.233.252.237:3006/confirmDeliveryTime?data='+JSON.stringify({'scheduledPickupTime': scheduledPickupTime})+''
+      var queryString = 'http://13.235.27.67:3006/confirmDeliveryTime?data='+JSON.stringify({'scheduledPickupTime': scheduledPickupTime})+''
       superagent
         .get(queryString)
         .end((error, response)=>{
@@ -685,7 +685,7 @@ app.post('/callWebhook', function(req, res) {
         })
         speech = speech + ' Which one should I check?'
       }
-      var queryString = 'http://13.233.252.237:3006/checkPackageStatus?data='+JSON.stringify(shipmentData)+''
+      var queryString = 'http://13.235.27.67:3006/checkPackageStatus?data='+JSON.stringify(shipmentData)+''
       superagent
         .get(queryString)
         .end((error, response)=>{
@@ -722,7 +722,7 @@ app.post('/callWebhook', function(req, res) {
             shipmentDetails.content = 'Clothes' 
         }
       }
-      var queryString = 'http://13.233.252.237:3006/trackByPackageNumber?data='+JSON.stringify(shipmentDetails)+''
+      var queryString = 'http://13.235.27.67:3006/trackByPackageNumber?data='+JSON.stringify(shipmentDetails)+''
       superagent
         .get(queryString)
         .end((error, response)=>{
