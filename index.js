@@ -155,7 +155,7 @@ app.post('/callWebhook', function(req, res) {
                 surcharge: '11',
                 deliveryCost: totalCostPrice
               }
-              var queryString = 'http://13.235.27.67:3006/createShipment?data='+JSON.stringify(shipmentDetails)+''
+              var queryString = 'http://13.233.35.103:3006/createShipment?data='+JSON.stringify(shipmentDetails)+''
               superagent
                 .get(queryString)
                 .end((error, response)=>{
@@ -611,7 +611,7 @@ app.post('/callWebhook', function(req, res) {
       console.log('req.body.result.contexts[index]: ',req.body.result.contexts[index])
       var scheduledPickupTime = req.body.result.contexts[index].parameters.scheduledPickupTime;    
       console.log('scheduledPickupTime: ', scheduledPickupTime)
-      var queryString = 'http://13.235.27.67:3006/confirmDeliveryTime?data='+JSON.stringify({'scheduledPickupTime': scheduledPickupTime})+''
+      var queryString = 'http://13.233.35.103:3006/confirmDeliveryTime?data='+JSON.stringify({'scheduledPickupTime': scheduledPickupTime})+''
       superagent
         .get(queryString)
         .end((error, response)=>{
